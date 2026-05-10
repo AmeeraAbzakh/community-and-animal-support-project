@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Maan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar-inner">
+      <a href="/home.html" class="navbar-logo"><span class="logo-icon">🤝</span> Maan</a>
+      <ul class="navbar-links">
+        <li><a href="/home.html">Home</a></li>
+        <li><a href="/all-campaigns.html">Campaigns</a></li>
+        <li><a href="/dashboard.html" class="active">Dashboard</a></li>
+      </ul>
+      <div class="navbar-auth" id="navbarAuth"></div>
+      <button class="navbar-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Redirect message for logged-out users -->
+  <div id="notLoggedIn" class="hidden" style="text-align:center;padding:120px 24px">
+    <div style="font-size:3rem;margin-bottom:16px">🔐</div>
+    <h2>Sign In Required</h2>
+    <p class="text-muted mt-8">You need to be logged in to view your dashboard.</p>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:24px">
+      <a href="/login.html" class="btn btn-primary">Login</a>
+      <a href="/user-signup.html" class="btn btn-outline-dark">Sign Up</a>
+    </div>
+  </div>
+
+  <!-- Dashboard layout -->
+  <div class="dashboard-layout" id="dashboardLayout">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" id="sidebarAvatar">U</div>
+        <div class="sidebar-user-name" id="sidebarName">User</div>
+        <div class="sidebar-user-role" id="sidebarRole">Member</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#overview" class="active" data-tab="overview">
+          <span class="nav-icon">📊</span> Overview
+        </a>
+        <a href="#campaigns" data-tab="campaigns">
+          <span class="nav-icon">📋</span> My Campaigns
+        </a>
+        <a href="#donations" data-tab="donations">
+          <span class="nav-icon">💚</span> My Donations
+        </a>
+        <a href="/create-campaign.html">
+          <span class="nav-icon">➕</span> New Campaign
+        </a>
+        <a href="#" id="logoutBtn" style="margin-top:auto;border-top:1px solid rgba(255,255,255,.1);margin-top:16px;padding-top:16px">
+          <span class="nav-icon">🚪</span> Logout
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="dashboard-content">
+      <!-- Overview tab -->
+      <div id="tabOverview" class="tab-content">
+        <h2 style="margin-bottom:4px" id="welcomeHeading">Welcome back!</h2>
+        <p class="text-muted mb-24">Here's a summary of your activity on Maan.</p>
+
+        <div class="dash-stats">
+          <div class="stat-card">
+            <div class="stat-card-icon">📋</div>
+            <div class="stat-card-value" id="statMyCampaigns">0</div>
+            <div class="stat-card-label">My Campaigns</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">💚</div>
+            <div class="stat-card-value" id="statMyDonations">0</div>
+            <div class="stat-card-label">Donations Made</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">💰</div>
+            <div class="stat-card-value" id="statTotalDonated">JD 0</div>
+            <div class="stat-card-label">Total Donated</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon">🎯</div>
+            <div class="stat-card-value" id="statTotalRaised">JD 0</div>
+            <div class="stat-card-label">Raised via My Campaigns</div>
+          </div>
+        </div>
+
+        <div class="flex-between mb-16">
+          <h3>Recent Campaigns</h3>
+          <a href="/create-campaign.html" class="btn btn-primary btn-sm">+ New Campaign</a>
+        </div>
+        <div id="recentCampaigns"><div class="spinner"></div></div>
+      </div>
+
+      <!-- Campaigns tab -->
+      <div id="tabCampaigns" class="tab-content hidden">
+        <div class="flex-between mb-24">
+          <div>
+            <h2>My Campaigns</h2>
+            <p class="text-muted mt-8">All campaigns you've created</p>
+          </div>
+          <a href="/create-campaign.html" class="btn btn-primary">+ New Campaign</a>
+        </div>
+        <div id="campaignsList"><div class="spinner"></div></div>
+      </div>
+
+      <!-- Donations tab -->
+      <div id="tabDonations" class="tab-content hidden">
+        <h2 style="margin-bottom:4px">My Donations</h2>
+        <p class="text-muted mb-24">All donations you've made</p>
+        <div id="donationsList"><div class="spinner"></div></div>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
