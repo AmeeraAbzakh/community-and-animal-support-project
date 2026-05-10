@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - Community & Animal Support</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+
+  <style>
+    :root {
+      --bg: #f4f6f3;
+      --white: #ffffff;
+      --border: #dde5d8;
+      --text: #1a2e1a;
+      --muted: #6b7f6b;
+      --green: #2d7a3a;
+      --green-light: #3d9e4e;
+      --green-pale: #eaf4ec;
+      --green-dark: #1e5427;
+      --orange: #e8722a;
+      --orange-light: #f08040;
+      --orange-pale: #fdf1ea;
+      --blue: #1a6b8a;
+      --blue-pale: #e8f4f9;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* navbar */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 48px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+    .logo-icons { display: flex; align-items: center; gap: 4px; }
+    .logo-icons i { font-size: 16px; color: var(--green); }
+    .logo-icons i.orange { color: var(--orange); }
+    .logo span {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    .nav-btns { display: flex; align-items: center; gap: 12px; }
+
+    .btn-outline {
+      padding: 8px 20px;
+      border: 1.5px solid var(--green);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--green);
+      background: transparent;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-outline:hover { background: var(--green-pale); }
+
+    .btn-solid {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      background: var(--green);
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-solid:hover { background: var(--green-light); }
+
+    /* hero */
+    .hero {
+      min-height: 100vh;
+      padding-top: 68px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      padding: 80px 64px 80px 80px;
+      animation: slideIn 0.7s ease both;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green-pale);
+      border: 1px solid #c0dfc5;
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 28px;
+    }
+
+    .hero-left h1 {
+      font-family: 'Lora', serif;
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .hero-left h1 em { font-style: italic; color: var(--green); }
+    .hero-left h1 span {
+      color: var(--orange);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 46px;
+    }
+
+    .hero-left p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 440px;
+      margin-bottom: 40px;
+    }
+
+    .hero-btns { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+    .btn-green {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-green:hover {
+      background: var(--green-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(45,122,58,0.3);
+    }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: var(--green-pale);
+    }
+
+    .hero-right {
+      position: relative;
+      height: 100vh;
+      background: var(--green-dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      padding: 40px;
+      animation: fadeIn 0.7s ease 0.2s both;
+      overflow: hidden;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      border: 60px solid rgba(255,255,255,0.04);
+      top: -100px; right: -100px;
+    }
+
+    .stat-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 24px 28px;
+      width: 100%;
+      max-width: 320px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      animation: fadeUp 0.6s ease both;
+    }
+    .stat-card:nth-child(1) { animation-delay: 0.3s; }
+    .stat-card:nth-child(2) { animation-delay: 0.45s; margin-left: 32px; }
+    .stat-card:nth-child(3) { animation-delay: 0.6s; }
+
+    .stat-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .stat-card:nth-child(1) .stat-icon { background: rgba(61,158,78,0.25); color: #7dd98a; }
+    .stat-card:nth-child(2) .stat-icon { background: rgba(232,114,42,0.25); color: #f0a070; }
+    .stat-card:nth-child(3) .stat-icon { background: rgba(26,107,138,0.25); color: #70c0d8; }
+
+    .stat-num { font-size: 28px; font-weight: 800; color: white; line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 12px; color: rgba(255,255,255,0.55); font-weight: 500; }
+
+    /* features */
+    .section { padding: 96px 80px; }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--green-pale);
+      border: 1px solid #c0dfc5;
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Lora', serif;
+      font-size: 38px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .section-title em { font-style: italic; color: var(--green); }
+
+    .section-desc {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 520px;
+      margin-bottom: 56px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--border);
+      transition: background 0.25s;
+    }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(45,122,58,0.1); border-color: #c0dfc5; }
+    .feature-card:hover::before { background: var(--green); }
+    .feature-card.orange:hover::before { background: var(--orange); }
+    .feature-card.blue:hover::before { background: var(--blue); }
+
+    .feature-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: var(--green-pale);
+      color: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    .feature-card.orange .feature-icon { background: var(--orange-pale); color: var(--orange); }
+    .feature-card.blue .feature-icon { background: var(--blue-pale); color: var(--blue); }
+
+    .feature-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    .feature-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+    /* stats bar */
+    .stats-bar {
+      background: var(--green-dark);
+      padding: 56px 80px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 16px;
+      border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .stat-item:last-child { border-right: none; }
+
+    .big-num {
+      font-size: 42px;
+      font-weight: 900;
+      color: white;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .big-num span { color: var(--orange-light); }
+    .stat-item p { font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 500; }
+
+    /* campaigns */
+    .campaigns-section {
+      padding: 96px 80px;
+      background: var(--white);
+    }
+
+    .campaigns-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+    }
+
+    .view-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green);
+      text-decoration: none;
+    }
+    .view-all:hover { gap: 10px; }
+
+    .campaigns-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .campaign-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+    .campaign-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.08); }
+
+    .camp-img {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      position: relative;
+    }
+    .camp-img.green { background: linear-gradient(135deg, #1e5427, #2d7a3a); }
+    .camp-img.orange { background: linear-gradient(135deg, #c05a1a, #e8722a); }
+    .camp-img.blue { background: linear-gradient(135deg, #124d66, #1a6b8a); }
+
+    .camp-badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: white;
+    }
+
+    .camp-body { padding: 24px; }
+    .camp-body h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; line-height: 1.4; }
+    .camp-body p { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .progress-fill { height: 100%; border-radius: 3px; }
+    .progress-fill.green { background: var(--green); }
+    .progress-fill.orange { background: var(--orange); }
+    .progress-fill.blue { background: var(--blue); }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .progress-labels .goal { color: var(--muted); }
+
+    .camp-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .donors-count { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+
+    .btn-donate {
+      padding: 7px 18px;
+      border-radius: 7px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-donate.green { background: var(--green-pale); color: var(--green); }
+    .btn-donate.orange { background: var(--orange-pale); color: var(--orange); }
+    .btn-donate.blue { background: var(--blue-pale); color: var(--blue); }
+    .btn-donate:hover { filter: brightness(0.93); }
+
+    /* volunteer */
+    .volunteer-section {
+      padding: 96px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .vol-left p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .vol-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .vol-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px 20px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .vol-card:hover { border-color: var(--green); background: var(--green-pale); transform: translateY(-3px); }
+    .vol-card i { font-size: 28px; color: var(--green); margin-bottom: 12px; display: block; }
+    .vol-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .vol-card p { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+    /* footer */
+    footer {
+      background: var(--text);
+      padding: 64px 80px 32px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer-brand .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .footer-brand .brand-logo i { font-size: 16px; color: #7dd98a; }
+    .footer-brand .brand-logo i.orange { color: var(--orange-light); }
+    .footer-brand .brand-logo span {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.9);
+    }
+    .footer-brand p { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.7; max-width: 280px; }
+
+    .footer-col h5 {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 18px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #7dd98a; }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+    }
+    .footer-bottom a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    .footer-bottom a:hover { color: rgba(255,255,255,0.7); }
+
+    /* scroll reveal */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+
+    /* responsive */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { height: 420px; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+      .stat-card { max-width: 260px; }
+      .stat-card:nth-child(2) { margin-left: 0; }
+      .hero-left { padding: 60px 40px 40px; }
+      .section, .campaigns-section, .volunteer-section { padding: 64px 40px; }
+      .stats-bar { padding: 48px 40px; }
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .features-grid, .campaigns-grid { grid-template-columns: 1fr; }
+      .stats-bar { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .stat-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 24px; }
+      .volunteer-section { grid-template-columns: 1fr; gap: 40px; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .hero-left h1 { font-size: 36px; }
+      .section-title { font-size: 28px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a class="logo" href="home.html">
+      <div class="logo-icons">
+        <i class="fa-solid fa-paw"></i>
+        <i class="fa-solid fa-heart orange"></i>
+      </div>
+      <span>Community Support</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#features">How It Works</a></li>
+      <li><a href="#campaigns">Campaigns</a></li>
+      <li><a href="#volunteer">Volunteer</a></li>
+    </ul>
+
+    <div class="nav-btns">
+      <a href="login.html" class="btn-outline">Sign In</a>
+      <a href="signup.html" class="btn-solid">Join Now</a>
+    </div>
+  </nav>
+
+  <!-- hero -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="tag">
+        <i class="fa-solid fa-location-dot"></i>
+        Based in Jordan
+      </div>
+      <h1>
+        Together We <em>Support</em><br />
+        People &amp; <span>Animals</span>
+      </h1>
+      <p>
+        A platform connecting donors, volunteers, and organizations
+        to help people and animals across Jordan. Every contribution matters.
+      </p>
+      <div class="hero-btns">
+        <a href="signup.html" class="btn-green">
+          <i class="fa-solid fa-heart"></i> Start Helping
+        </a>
+        <a href="#campaigns" class="btn-ghost">
+          <i class="fa-solid fa-search"></i> Browse Campaigns
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+        <div>
+          <div class="stat-num">2,400+</div>
+          <div class="stat-label">Active Supporters</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-paw"></i></div>
+        <div>
+          <div class="stat-num">840</div>
+          <div class="stat-label">Animals Rescued</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+        <div>
+          <div class="stat-num">320</div>
+          <div class="stat-label">Families Supported</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- features -->
+  <section class="section" id="features">
+    <div class="reveal">
+      <div class="section-tag"><i class="fa-solid fa-star"></i> What We Offer</div>
+      <h2 class="section-title">Everything You Need to<br /><em>Make an Impact</em></h2>
+      <p class="section-desc">Our platform brings together all the tools needed to connect helpers with those in need — simply and transparently.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fa-solid fa-bullhorn"></i></div>
+        <h3>Create Campaigns</h3>
+        <p>Launch fundraising campaigns for people in need or animals requiring care. Share your story and reach a wider audience.</p>
+      </div>
+      <div class="feature-card orange reveal">
+        <div class="feature-icon"><i class="fa-solid fa-wallet"></i></div>
+        <h3>Secure Donations</h3>
+        <p>Donate safely to campaigns you care about. Every transaction is tracked so you know exactly where your money goes.</p>
+      </div>
+      <div class="feature-card blue reveal">
+        <div class="feature-icon"><i class="fa-solid fa-people-group"></i></div>
+        <h3>Volunteer Network</h3>
+        <p>Connect with local organizations and volunteer your time. Find opportunities that match your schedule.</p>
+      </div>
+      <div class="feature-card orange reveal">
+        <div class="feature-icon"><i class="fa-solid fa-paw"></i></div>
+        <h3>Animal Welfare</h3>
+        <p>Report stray animals, support rescue missions, and contribute to shelters across Jordan.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon"><i class="fa-solid fa-bell"></i></div>
+        <h3>Real-time Updates</h3>
+        <p>Stay informed about campaign progress and get notified when causes you support hit new milestones.</p>
+      </div>
+      <div class="feature-card blue reveal">
+        <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>Verified & Trusted</h3>
+        <p>All campaigns and organizations go through a verification process to ensure transparency on our platform.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- stats bar -->
+  <div class="stats-bar">
+    <div class="stat-item reveal">
+      <div class="big-num">JD 180<span>K+</span></div>
+      <p>Total Donations Raised</p>
+    </div>
+    <div class="stat-item reveal">
+      <div class="big-num">95<span>%</span></div>
+      <p>Campaigns Successfully Completed</p>
+    </div>
+    <div class="stat-item reveal">
+      <div class="big-num">20<span>+</span></div>
+      <p>Partner Organizations</p>
+    </div>
+    <div class="stat-item reveal">
+      <div class="big-num">4.8<span>★</span></div>
+      <p>Average User Satisfaction</p>
+    </div>
+  </div>
+
+  <!-- campaigns -->
+  <section class="campaigns-section" id="campaigns">
+    <div class="campaigns-header reveal">
+      <div>
+        <div class="section-tag"><i class="fa-solid fa-fire"></i> Active Now</div>
+        <h2 class="section-title">Featured <em>Campaigns</em></h2>
+      </div>
+      <a href="#" class="view-all">View all campaigns <i class="fa-solid fa-arrow-right"></i></a>
+    </div>
+
+    <div class="campaigns-grid">
+      <div class="campaign-card reveal">
+        <div class="camp-img green">
+          <span>🐕</span>
+          <span class="camp-badge">Animal Rescue</span>
+        </div>
+        <div class="camp-body">
+          <h3>Emergency Care for 30 Stray Dogs in Amman</h3>
+          <p>Found injured near Al-Hashmi. We need funds for vet treatment and temporary shelter.</p>
+          <div class="progress-bar"><div class="progress-fill green" style="width:72%"></div></div>
+          <div class="progress-labels">
+            <span>JD 1,440 raised</span>
+            <span class="goal">of JD 2,000</span>
+          </div>
+          <div class="camp-footer">
+            <span class="donors-count"><i class="fa-solid fa-user"></i> 48 donors</span>
+            <a href="campaign-details.html" class="btn-donate green">Donate Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="campaign-card reveal">
+        <div class="camp-img orange">
+          <span>👨‍👩‍👧</span>
+          <span class="camp-badge">Family Support</span>
+        </div>
+        <div class="camp-body">
+          <h3>Help a Family of 5 Cover Medical Expenses</h3>
+          <p>A family in Zarqa is struggling to afford treatment after a sudden illness.</p>
+          <div class="progress-bar"><div class="progress-fill orange" style="width:55%"></div></div>
+          <div class="progress-labels">
+            <span>JD 1,100 raised</span>
+            <span class="goal">of JD 2,000</span>
+          </div>
+          <div class="camp-footer">
+            <span class="donors-count"><i class="fa-solid fa-user"></i> 34 donors</span>
+            <a href="login.html" class="btn-donate orange">Donate Now</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="campaign-card reveal">
+        <div class="camp-img blue">
+          <span>🐱</span>
+          <span class="camp-badge">Cat Shelter</span>
+        </div>
+        <div class="camp-body">
+          <h3>Build a Safe Shelter for 50 Cats in Irbid</h3>
+          <p>Local volunteers working to build a proper shelter for stray cats in Irbid.</p>
+          <div class="progress-bar"><div class="progress-fill blue" style="width:38%"></div></div>
+          <div class="progress-labels">
+            <span>JD 760 raised</span>
+            <span class="goal">of JD 2,000</span>
+          </div>
+          <div class="camp-footer">
+            <span class="donors-count"><i class="fa-solid fa-user"></i> 27 donors</span>
+            <a href="login.html" class="btn-donate blue">Donate Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- volunteer -->
+  <section class="volunteer-section" id="volunteer">
+    <div class="vol-left">
+      <div class="section-tag reveal"><i class="fa-solid fa-hands-helping"></i> Get Involved</div>
+      <h2 class="section-title reveal">Give Your Time,<br /><em>Change Lives</em></h2>
+      <p class="reveal">
+        Volunteering is one of the most powerful ways to make a difference.
+        Whether you help with animal care, outreach, or logistics — there's a role for you.
+      </p>
+      <a href="signup.html" class="btn-green reveal">
+        <i class="fa-solid fa-arrow-right"></i> Become a Volunteer
+      </a>
+    </div>
+
+    <div class="vol-grid reveal">
+      <div class="vol-card">
+        <i class="fa-solid fa-paw"></i>
+        <h4>Animal Care</h4>
+        <p>Help feed and care for rescued animals at local shelters.</p>
+      </div>
+      <div class="vol-card">
+        <i class="fa-solid fa-truck"></i>
+        <h4>Delivery & Logistics</h4>
+        <p>Transport donated goods and supplies to families in need.</p>
+      </div>
+      <div class="vol-card">
+        <i class="fa-solid fa-camera"></i>
+        <h4>Media & Outreach</h4>
+        <p>Help document and spread awareness for active campaigns.</p>
+      </div>
+      <div class="vol-card">
+        <i class="fa-solid fa-stethoscope"></i>
+        <h4>Medical Support</h4>
+        <p>Assist veterinary teams and medical volunteers in the field.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- footer -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <i class="fa-solid fa-paw"></i>
+          <i class="fa-solid fa-heart orange"></i>
+          <span>Community Support</span>
+        </div>
+        <p>Connecting donors, volunteers, and organizations to support people and animals across Jordan.</p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Platform</h5>
+        <ul>
+          <li><a href="#campaigns">Browse Campaigns</a></li>
+          <li><a href="signup.html">Create Campaign</a></li>
+          <li><a href="#volunteer">Volunteer</a></li>
+          <li><a href="signup.html">Report a Case</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Account</h5>
+        <ul>
+          <li><a href="login.html">Sign In</a></li>
+          <li><a href="signup.html">Sign Up</a></li>
+          <li><a href="user-signup.html">Supporter</a></li>
+          <li><a href="org-signup.html">Organization</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>About</h5>
+        <ul>
+          <li><a href="#">Our Mission</a></li>
+          <li><a href="#">How It Works</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Community & Animal Support. Built by Omar Meteb & Ameera Abzakh.</span>
+      <span>Jordan &nbsp;·&nbsp; <a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const items = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('show'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    items.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

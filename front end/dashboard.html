@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Community & Animal Support</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    :root {
+      --green: #2d7a3a;
+      --green-light: #3d9e4e;
+      --green-pale: #eaf4ec;
+      --green-dark: #1e5427;
+      --orange: #e8722a;
+      --orange-pale: #fdf1ea;
+      --blue: #1a6b8a;
+      --blue-pale: #e8f4f9;
+      --text: #1a2e1a;
+      --muted: #6b7f6b;
+      --border: #dde5d8;
+      --bg: #f4f6f3;
+      --sidebar-w: 220px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+
+    /* sidebar */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--green-dark);
+      min-height: 100vh;
+      position: fixed; top: 0; left: 0;
+      display: flex; flex-direction: column;
+      padding: 20px 14px;
+    }
+    .sb-logo { display: flex; align-items: center; gap: 8px; padding: 0 8px 18px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 14px; }
+    .sb-logo i { color: #7dd98a; font-size: 14px; }
+    .sb-logo i.orange { color: var(--orange); }
+    .sb-logo span { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.85); letter-spacing: 1px; }
+    .sb-user { padding: 0 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 16px; }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: #7dd98a; margin-bottom: 8px; }
+    .sb-user .name { font-size: 13px; font-weight: 700; color: white; }
+    .sb-user .role { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+    .nav-section { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); padding: 0 8px; margin: 14px 0 6px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 7px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); text-decoration: none; transition: all 0.2s; margin-bottom: 2px; }
+    .nav-item i { font-size: 12px; width: 16px; text-align: center; }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: white; }
+    .nav-item.active { background: rgba(255,255,255,0.12); color: white; }
+    .badge { margin-left: auto; background: var(--orange); color: white; font-size: 9px; font-weight: 800; border-radius: 10px; padding: 2px 6px; }
+    .sb-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .signout { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.3); text-decoration: none; padding: 8px 10px; transition: color 0.2s; }
+    .signout:hover { color: rgba(255,255,255,0.6); }
+
+    /* main */
+    .main { margin-left: var(--sidebar-w); flex: 1; }
+    .topbar { background: white; border-bottom: 1px solid var(--border); padding: 0 28px; height: 58px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+    .topbar h1 { font-size: 14px; font-weight: 800; }
+    .topbar-right { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--text); }
+    .top-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--green-pale); color: var(--green); font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+
+    .content { padding: 24px 28px; }
+
+    .welcome { background: var(--green-dark); border-radius: 12px; padding: 22px 26px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .welcome h2 { font-size: 17px; font-weight: 800; color: white; margin-bottom: 4px; }
+    .welcome p { font-size: 12px; color: rgba(255,255,255,0.5); }
+    .btn-new { padding: 9px 18px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: white; cursor: pointer; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+    .btn-new:hover { background: rgba(255,255,255,0.2); }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+    .stat-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+    .stat-card .icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; margin-bottom: 10px; }
+    .stat-card.g .icon { background: var(--green-pale); color: var(--green); }
+    .stat-card.o .icon { background: var(--orange-pale); color: var(--orange); }
+    .stat-card.b .icon { background: var(--blue-pale); color: var(--blue); }
+    .stat-card.p .icon { background: #f3eeff; color: #7c4dcc; }
+    .stat-card .val { font-size: 20px; font-weight: 900; color: var(--text); }
+    .stat-card .lbl { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .panel { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
+    .panel-title { font-size: 13px; font-weight: 800; margin-bottom: 14px; }
+
+    .camp-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+    .camp-row:last-child { border-bottom: none; }
+    .camp-emoji { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+    .camp-emoji.g { background: linear-gradient(135deg, #1e5427, #2d7a3a); }
+    .camp-emoji.o { background: linear-gradient(135deg, #c05a1a, #e8722a); }
+    .camp-info { flex: 1; min-width: 0; }
+    .camp-name { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mini-bar { height: 3px; background: var(--border); border-radius: 2px; margin-top: 5px; }
+    .mini-fill { height: 100%; border-radius: 2px; }
+    .mini-fill.g { background: var(--green); }
+    .mini-fill.o { background: var(--orange); }
+    .camp-pct { font-size: 12px; font-weight: 800; }
+
+    .act-item { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+    .act-item:last-child { border-bottom: none; }
+    .act-dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+    .act-dot.g { background: var(--green-pale); color: var(--green); }
+    .act-dot.o { background: var(--orange-pale); color: var(--orange); }
+    .act-text { font-size: 12px; line-height: 1.5; }
+    .act-time { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+    .qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .qa { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--bg); cursor: pointer; text-decoration: none; transition: all 0.2s; }
+    .qa:hover { border-color: var(--green); background: var(--green-pale); }
+    .qa i { color: var(--green); font-size: 13px; width: 16px; text-align: center; }
+    .qa span { font-size: 12px; font-weight: 700; color: var(--text); }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+      .content { padding: 16px; }
+      .topbar { padding: 0 16px; }
+      .welcome { flex-direction: column; gap: 12px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <i class="fa-solid fa-paw"></i>
+      <i class="fa-solid fa-heart orange"></i>
+      <span>Community Support</span>
+    </div>
+
+    <div class="sb-user">
+      <div class="avatar">O</div>
+      <div class="name">Omar Meteb</div>
+      <div class="role">Supporter</div>
+    </div>
+
+    <div class="nav-section">Main</div>
+    <a class="nav-item active" href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+    <a class="nav-item" href="home.html"><i class="fa-solid fa-fire"></i> Campaigns <span class="badge">3</span></a>
+    <a class="nav-item" href="#"><i class="fa-solid fa-heart"></i> My Donations</a>
+    <a class="nav-item" href="#"><i class="fa-solid fa-people-group"></i> Volunteer</a>
+
+    <div class="nav-section">Animals</div>
+    <a class="nav-item" href="#"><i class="fa-solid fa-paw"></i> Report Stray</a>
+    <a class="nav-item" href="#"><i class="fa-solid fa-house-chimney"></i> Shelters</a>
+
+    <div class="nav-section">Account</div>
+    <a class="nav-item" href="#"><i class="fa-solid fa-bell"></i> Notifications <span class="badge">2</span></a>
+    <a class="nav-item" href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+
+    <div class="sb-footer">
+      <a class="signout" href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Sign Out</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <h1>Dashboard</h1>
+      <div class="topbar-right">
+        <div class="top-avatar">O</div>
+        Omar
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="welcome">
+        <div>
+          <h2>Good morning, Omar 👋</h2>
+          <p>You've helped raise JD 85 this month. Here's what's going on.</p>
+        </div>
+        <a href="#" class="btn-new"><i class="fa-solid fa-plus"></i> Start a Campaign</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card g">
+          <div class="icon"><i class="fa-solid fa-heart"></i></div>
+          <div class="val">JD 85</div>
+          <div class="lbl">Total Donated</div>
+        </div>
+        <div class="stat-card o">
+          <div class="icon"><i class="fa-solid fa-fire"></i></div>
+          <div class="val">4</div>
+          <div class="lbl">Campaigns Supported</div>
+        </div>
+        <div class="stat-card b">
+          <div class="icon"><i class="fa-solid fa-clock"></i></div>
+          <div class="val">2 hrs</div>
+          <div class="lbl">Volunteered</div>
+        </div>
+        <div class="stat-card p">
+          <div class="icon"><i class="fa-solid fa-paw"></i></div>
+          <div class="val">3</div>
+          <div class="lbl">Animals Helped</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-title">Campaigns You Support</div>
+          <div class="camp-row">
+            <div class="camp-emoji g">🐕</div>
+            <div class="camp-info">
+              <div class="camp-name">Emergency Care for 30 Stray Dogs in Amman</div>
+              <div class="mini-bar"><div class="mini-fill g" style="width:72%"></div></div>
+            </div>
+            <div class="camp-pct">72%</div>
+          </div>
+          <div class="camp-row">
+            <div class="camp-emoji o">👨‍👩‍👧</div>
+            <div class="camp-info">
+              <div class="camp-name">Help a Family of 5 Cover Medical Expenses</div>
+              <div class="mini-bar"><div class="mini-fill o" style="width:55%"></div></div>
+            </div>
+            <div class="camp-pct">55%</div>
+          </div>
+          <div class="camp-row">
+            <div class="camp-emoji g">🐱</div>
+            <div class="camp-info">
+              <div class="camp-name">Build a Safe Shelter for 50 Cats in Irbid</div>
+              <div class="mini-bar"><div class="mini-fill g" style="width:38%"></div></div>
+            </div>
+            <div class="camp-pct">38%</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Recent Activity</div>
+          <div class="act-item">
+            <div class="act-dot g"><i class="fa-solid fa-heart"></i></div>
+            <div>
+              <div class="act-text">You donated <strong>JD 25</strong> to the stray dogs campaign</div>
+              <div class="act-time">2 hours ago</div>
+            </div>
+          </div>
+          <div class="act-item">
+            <div class="act-dot o"><i class="fa-solid fa-bell"></i></div>
+            <div>
+              <div class="act-text"><strong>Dogs campaign</strong> reached 70% funded!</div>
+              <div class="act-time">Yesterday</div>
+            </div>
+          </div>
+          <div class="act-item">
+            <div class="act-dot g"><i class="fa-solid fa-people-group"></i></div>
+            <div>
+              <div class="act-text">Volunteered 2 hrs with <strong>Jordan Animal Rescue</strong></div>
+              <div class="act-time">April 6</div>
+            </div>
+          </div>
+          <div class="act-item">
+            <div class="act-dot g"><i class="fa-solid fa-heart"></i></div>
+            <div>
+              <div class="act-text">You donated <strong>JD 10</strong> to the family in Zarqa</div>
+              <div class="act-time">April 3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Quick Actions</div>
+        <div class="qa-grid">
+          <a class="qa" href="home.html"><i class="fa-solid fa-magnifying-glass"></i><span>Browse Campaigns</span></a>
+          <a class="qa" href="#"><i class="fa-solid fa-plus"></i><span>Start a Campaign</span></a>
+          <a class="qa" href="#"><i class="fa-solid fa-paw"></i><span>Report Stray Animal</span></a>
+          <a class="qa" href="#"><i class="fa-solid fa-hand-holding-heart"></i><span>Find Volunteer Work</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

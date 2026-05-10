@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Help - Community & Animal Support</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    :root {
+      --orange: #e8722a;
+      --orange-light: #f08040;
+      --orange-pale: #fdf1ea;
+      --text: #2a1a0e;
+      --muted: #7a6050;
+      --border: #ecddd0;
+      --bg: #faf5f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+    }
+    main { width: 100%; max-width: 600px; animation: fadeUp 0.4s ease both; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .back { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: none; margin-bottom: 16px; transition: color 0.2s; }
+    .back:hover { color: var(--orange); }
+    .notice {
+      background: var(--orange-pale);
+      border: 1px solid #f0c8a0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 12px; color: var(--muted); line-height: 1.6;
+    }
+    .notice i { color: var(--orange); margin-top: 1px; flex-shrink: 0; }
+    .card { background: white; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .card-header { background: var(--orange-pale); border-bottom: 1px solid var(--border); padding: 24px 32px; display: flex; align-items: center; gap: 14px; }
+    .header-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--orange); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .card-header h1 { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
+    .card-header p { font-size: 12px; color: var(--muted); }
+    .card-body { padding: 32px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .row.full { grid-template-columns: 1fr; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .input-box { position: relative; }
+    .input-box i { position: absolute; left: 12px; top: 14px; color: #aaa; font-size: 13px; pointer-events: none; transition: color 0.2s; }
+    .input-box i.center { top: 50%; transform: translateY(-50%); }
+    .input-box input, .input-box select, .input-box textarea {
+      width: 100%;
+      padding: 11px 14px 11px 36px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      appearance: none;
+      transition: border-color 0.2s;
+    }
+    .input-box textarea { min-height: 85px; resize: vertical; line-height: 1.6; }
+    .input-box input:focus, .input-box select:focus, .input-box textarea:focus { border-color: var(--orange); }
+    .input-box:focus-within i { color: var(--orange); }
+    .input-box input::placeholder, .input-box textarea::placeholder { color: #bbb; }
+    .divider { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin: 24px 0 16px; display: flex; align-items: center; gap: 10px; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .strength-bar { display: flex; gap: 4px; margin-top: 5px; }
+    .strength-bar span { flex: 1; height: 3px; border-radius: 2px; background: var(--border); transition: background 0.3s; }
+    .terms { display: flex; align-items: flex-start; gap: 10px; margin-top: 20px; font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
+    .terms input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; min-width: 16px; border: 1.5px solid var(--border); border-radius: 4px; background: var(--bg); cursor: pointer; position: relative; margin-top: 1px; transition: all 0.2s; }
+    .terms input:checked { background: var(--orange); border-color: var(--orange); }
+    .terms input:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 8px; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .terms a { color: var(--orange); font-weight: 600; text-decoration: none; }
+    .btn-submit {
+      width: 100%; margin-top: 16px; padding: 13px;
+      background: var(--orange); color: white; border: none;
+      border-radius: 8px; font-family: 'Montserrat', sans-serif;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: all 0.2s; text-decoration: none;
+    }
+    .btn-submit:hover { background: var(--orange-light); transform: translateY(-1px); }
+    .login-link { text-align: center; margin-top: 16px; font-size: 12px; color: var(--muted); }
+    .login-link a { color: var(--orange); font-weight: 600; text-decoration: none; }
+    @media (max-width: 560px) {
+      .row { grid-template-columns: 1fr; }
+      .card-body { padding: 20px; }
+      .card-header { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <a class="back" href="signup.html"><i class="fa-solid fa-arrow-left"></i> Back to account types</a>
+
+  <div class="notice">
+    <i class="fa-solid fa-shield-halved"></i>
+    <span>Your information is <strong>completely private and secure</strong>. It will only be used to connect you with the right support.</span>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="header-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+      <div>
+        <h1>Request Support</h1>
+        <p>We're here to help. Tell us a little about yourself.</p>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="field">
+          <label>First Name</label>
+          <div class="input-box">
+            <i class="fa-solid fa-user center"></i>
+            <input type="text" placeholder="First name" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Last Name</label>
+          <div class="input-box">
+            <i class="fa-solid fa-user center"></i>
+            <input type="text" placeholder="Last name" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Email</label>
+          <div class="input-box">
+            <i class="fa-solid fa-envelope center"></i>
+            <input type="email" placeholder="you@example.com" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <div class="input-box">
+            <i class="fa-solid fa-phone center"></i>
+            <input type="tel" placeholder="+962 7X XXX XXXX" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row full">
+        <div class="field">
+          <label>Type of Support Needed</label>
+          <div class="input-box">
+            <i class="fa-solid fa-list center"></i>
+            <select>
+              <option value="">Select a category</option>
+              <option>Financial Assistance</option>
+              <option>Medical Support</option>
+              <option>Food &amp; Basic Needs</option>
+              <option>Housing Support</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="row full">
+        <div class="field">
+          <label>Brief Description</label>
+          <div class="input-box">
+            <i class="fa-solid fa-pen"></i>
+            <textarea placeholder="Briefly describe your situation and what kind of help you need."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider">Account Security</div>
+
+      <div class="row">
+        <div class="field">
+          <label>Password</label>
+          <div class="input-box">
+            <i class="fa-solid fa-lock center"></i>
+            <input type="password" placeholder="Min. 8 characters" id="pw" oninput="checkStrength()" />
+          </div>
+          <div class="strength-bar" id="strength">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="field">
+          <label>Confirm Password</label>
+          <div class="input-box">
+            <i class="fa-solid fa-lock center"></i>
+            <input type="password" placeholder="Repeat password" />
+          </div>
+        </div>
+      </div>
+
+      <label class="terms">
+        <input type="checkbox" />
+        I agree to the <a href="#">Terms of Service</a> and understand my data is handled with full privacy.
+      </label>
+
+      <a href="home.html" class="btn-submit">
+        <i class="fa-solid fa-arrow-right"></i> Submit &amp; Create Account
+      </a>
+
+      <p class="login-link">Already have an account? <a href="login.html">Sign in</a></p>
+    </div>
+  </div>
+</main>
+
+<script>
+  function checkStrength() {
+    const pw = document.getElementById('pw').value;
+    const bars = document.getElementById('strength').querySelectorAll('span');
+    const colors = ['#e74c3c', '#e8722a', '#f0c040', '#2d7a3a'];
+    let score = 0;
+    if (pw.length >= 8) score++;
+    if (/[A-Z]/.test(pw)) score++;
+    if (/[0-9]/.test(pw)) score++;
+    if (/[^A-Za-z0-9]/.test(pw)) score++;
+    bars.forEach((b, i) => {
+      b.style.background = i < score ? colors[score - 1] : '#ecddd0';
+    });
+  }
+</script>
+</body>
+</html>

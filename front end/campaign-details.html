@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campaign Details - Community & Animal Support</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    :root {
+      --green: #2d7a3a;
+      --green-light: #3d9e4e;
+      --green-pale: #eaf4ec;
+      --green-dark: #1e5427;
+      --orange: #e8722a;
+      --orange-pale: #fdf1ea;
+      --blue: #1a6b8a;
+      --text: #1a2e1a;
+      --muted: #6b7f6b;
+      --border: #dde5d8;
+      --bg: #f4f6f3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo i { color: var(--green); font-size: 16px; }
+    .logo i.orange { color: var(--orange); }
+    .logo span { font-size: 13px; font-weight: 800; color: var(--text); letter-spacing: 1px; }
+    .nav-btns { display: flex; gap: 10px; }
+    .btn-outline { padding: 7px 18px; border: 1.5px solid var(--green); border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--green); background: transparent; text-decoration: none; transition: background 0.2s; }
+    .btn-outline:hover { background: var(--green-pale); }
+    .btn-solid { padding: 7px 18px; border: none; border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: white; background: var(--green); text-decoration: none; transition: background 0.2s; }
+    .btn-solid:hover { background: var(--green-light); }
+
+    .page { max-width: 960px; margin: 0 auto; padding: 84px 24px 60px; }
+
+    .breadcrumb { font-size: 12px; color: var(--muted); margin-bottom: 18px; display: flex; align-items: center; gap: 6px; }
+    .breadcrumb a { color: var(--muted); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--green); }
+    .breadcrumb i { font-size: 9px; }
+
+    .camp-header {
+      background: var(--green-dark);
+      border-radius: 14px;
+      padding: 32px 36px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .camp-header::after { content: '🐕'; position: absolute; right: 36px; top: 50%; transform: translateY(-50%); font-size: 80px; opacity: 0.18; }
+    .camp-type { display: inline-block; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.85); letter-spacing: 1px; margin-bottom: 12px; }
+    .camp-header h1 { font-family: 'Lora', serif; font-size: 24px; font-weight: 600; color: white; line-height: 1.3; max-width: 540px; }
+
+    .layout { display: grid; grid-template-columns: 1fr 290px; gap: 20px; align-items: start; }
+
+    .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 18px; }
+    .card h2 { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .card h2 i { color: var(--green); }
+
+    .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
+    .progress-fill { height: 100%; background: var(--green); border-radius: 4px; }
+    .progress-nums { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 14px; }
+    .progress-nums .raised { font-weight: 800; }
+    .progress-nums .goal { color: var(--muted); }
+    .three-stats { display: flex; gap: 20px; }
+    .mini-stat .val { font-size: 20px; font-weight: 800; }
+    .mini-stat .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .story p { font-size: 13px; color: var(--muted); line-height: 1.8; margin-bottom: 12px; }
+    .story p:last-child { margin-bottom: 0; }
+    .story strong { color: var(--text); }
+
+    .update-item { display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border); }
+    .update-item:last-child { border-bottom: none; }
+    .update-date { font-size: 11px; font-weight: 700; color: var(--muted); min-width: 50px; padding-top: 2px; }
+    .update-body .title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .update-body .desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+    /* sidebar */
+    .days-left { background: var(--orange-pale); border: 1px solid #f0c8a0; border-radius: 8px; padding: 10px 14px; font-size: 12px; font-weight: 700; color: var(--orange); display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+
+    .donate-card { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
+    .donate-top { background: var(--green-dark); padding: 18px 20px; }
+    .donate-top .label { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 3px; }
+    .donate-top .amount { font-size: 26px; font-weight: 900; color: white; }
+    .donate-top .goal { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+    .donate-top .bar { height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin-top: 10px; }
+    .donate-top .fill { height: 100%; width: 72%; background: #7dd98a; border-radius: 2px; }
+    .donate-body { padding: 18px 20px; }
+    .amount-btns { display: flex; gap: 8px; margin-bottom: 10px; }
+    .amt { flex: 1; padding: 9px 4px; border: 1.5px solid var(--border); border-radius: 7px; background: var(--bg); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); cursor: pointer; text-align: center; transition: all 0.2s; }
+    .amt:hover, .amt.picked { border-color: var(--green); background: var(--green-pale); color: var(--green); }
+    .custom-amount { width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; margin-bottom: 10px; }
+    .custom-amount:focus { border-color: var(--green); }
+    .custom-amount::placeholder { color: #bbb; }
+    .btn-donate { width: 100%; padding: 12px; background: var(--green); color: white; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; text-decoration: none; }
+    .btn-donate:hover { background: var(--green-light); }
+    .secure-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+    .org-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; }
+    .org-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
+    .org-row { display: flex; align-items: center; gap: 10px; }
+    .org-icon { width: 38px; height: 38px; border-radius: 8px; background: var(--green-pale); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+    .org-name { font-size: 13px; font-weight: 700; color: var(--text); }
+    .org-check { font-size: 11px; color: var(--green); font-weight: 600; margin-top: 2px; }
+
+    .share-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+    .share-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
+    .share-btns { display: flex; gap: 8px; }
+    .share-btn { flex: 1; padding: 9px; border: 1.5px solid var(--border); border-radius: 7px; background: var(--bg); cursor: pointer; text-align: center; font-size: 14px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .share-btn:hover { border-color: var(--green); background: var(--green-pale); }
+
+    @media (max-width: 768px) {
+      .layout { grid-template-columns: 1fr; }
+      .camp-header::after { display: none; }
+      .camp-header { padding: 22px 18px; }
+      nav { padding: 0 16px; }
+      .page { padding: 76px 14px 40px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="home.html">
+      <i class="fa-solid fa-paw"></i>
+      <i class="fa-solid fa-heart orange"></i>
+      <span>Community Support</span>
+    </a>
+    <div class="nav-btns">
+      <a href="login.html" class="btn-outline">Sign In</a>
+      <a href="signup.html" class="btn-solid">Join Now</a>
+    </div>
+  </nav>
+
+  <div class="page">
+    <div class="breadcrumb">
+      <a href="home.html">Home</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <a href="#">Campaigns</a>
+      <i class="fa-solid fa-chevron-right"></i>
+      <span>Animal Rescue</span>
+    </div>
+
+    <div class="camp-header">
+      <div class="camp-type">🐾 Animal Rescue</div>
+      <h1>Emergency Care for 30 Stray Dogs in Amman</h1>
+    </div>
+
+    <div class="layout">
+      <!-- left -->
+      <div>
+        <div class="card">
+          <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+          <div class="progress-nums">
+            <span class="raised">JD 1,440 raised</span>
+            <span class="goal">of JD 2,000</span>
+          </div>
+          <div class="three-stats">
+            <div class="mini-stat"><div class="val">72%</div><div class="lbl">Funded</div></div>
+            <div class="mini-stat"><div class="val">48</div><div class="lbl">Donors</div></div>
+            <div class="mini-stat"><div class="val">18</div><div class="lbl">Days Left</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><i class="fa-solid fa-book-open"></i> About This Campaign</h2>
+          <div class="story">
+            <p>On March 14th, our volunteers found 30 stray dogs near the Al-Hashmi district in Amman. Several were injured and malnourished and needed urgent vet care.</p>
+            <p>We rushed to provide first aid, but full treatment, vaccinations, and temporary shelter cost more than we can cover alone. We're asking the community to help.</p>
+            <p><strong>Your donation goes toward:</strong> emergency vet care, anti-parasite treatment, food for 60 days, and kennel space while we find them homes.</p>
+            <p>We've already partnered with two Amman vet clinics at reduced rates. With your help, we can save all 30 dogs before the end of the month.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2><i class="fa-solid fa-bell"></i> Updates</h2>
+          <div class="update-item">
+            <div class="update-date">Apr 8</div>
+            <div class="update-body">
+              <div class="title">18 dogs received first treatment ✅</div>
+              <div class="desc">Vaccinations and wound care done. Remaining 12 scheduled for next week.</div>
+            </div>
+          </div>
+          <div class="update-item">
+            <div class="update-date">Apr 2</div>
+            <div class="update-body">
+              <div class="title">Shelter secured 🏠</div>
+              <div class="desc">A local farm offered space. Kennels and feeding stations are set up.</div>
+            </div>
+          </div>
+          <div class="update-item">
+            <div class="update-date">Mar 14</div>
+            <div class="update-body">
+              <div class="title">Campaign launched 🚀</div>
+              <div class="desc">30 dogs found in Al-Hashmi. Rescue operation started immediately.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- sidebar -->
+      <div>
+        <div class="days-left"><i class="fa-solid fa-clock"></i> 18 days left</div>
+
+        <div class="donate-card">
+          <div class="donate-top">
+            <div class="label">Total Raised</div>
+            <div class="amount">JD 1,440</div>
+            <div class="goal">Goal: JD 2,000</div>
+            <div class="bar"><div class="fill"></div></div>
+          </div>
+          <div class="donate-body">
+            <div class="amount-btns">
+              <button class="amt" onclick="pickAmt(this)">JD 10</button>
+              <button class="amt picked" onclick="pickAmt(this)">JD 25</button>
+              <button class="amt" onclick="pickAmt(this)">JD 50</button>
+            </div>
+            <input class="custom-amount" type="number" placeholder="Or enter amount (JD)" />
+            <a href="login.html" class="btn-donate"><i class="fa-solid fa-heart"></i> Donate Now</a>
+            <div class="secure-note">100% goes to this campaign</div>
+          </div>
+        </div>
+
+        <div class="org-card">
+          <div class="org-label">ORGANIZER</div>
+          <div class="org-row">
+            <div class="org-icon"><i class="fa-solid fa-building-ngo"></i></div>
+            <div>
+              <div class="org-name">Jordan Animal Rescue Network</div>
+              <div class="org-check"><i class="fa-solid fa-circle-check"></i> Verified</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="share-card">
+          <div class="share-label">SHARE</div>
+          <div class="share-btns">
+            <a href="#" class="share-btn"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i></a>
+            <a href="#" class="share-btn"><i class="fa-brands fa-facebook" style="color:#1877f2"></i></a>
+            <a href="#" class="share-btn"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" class="share-btn"><i class="fa-solid fa-link" style="color:var(--muted)"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function pickAmt(btn) {
+      document.querySelectorAll('.amt').forEach(b => b.classList.remove('picked'));
+      btn.classList.add('picked');
+    }
+  </script>
+</body>
+</html>
