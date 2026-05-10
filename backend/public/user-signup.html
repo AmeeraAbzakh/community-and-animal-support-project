@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — Maan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body class="auth-page">
+  <div class="auth-card">
+    <div class="auth-card-header">
+      <div class="logo-mark">🤝</div>
+      <h2>Create Account</h2>
+      <p>Join Maan and start making a difference</p>
+    </div>
+    <div class="auth-card-body">
+      <div class="alert" id="alertBox"></div>
+
+      <form id="signupForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="full_name">Full Name <span class="required">*</span></label>
+          <input type="text" id="full_name" class="form-control" placeholder="Your full name" required />
+          <span class="form-error" id="nameErr">Full name is required.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">Email Address <span class="required">*</span></label>
+          <input type="email" id="email" class="form-control" placeholder="you@example.com" required />
+          <span class="form-error" id="emailErr">Please enter a valid email.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password <span class="required">*</span></label>
+          <input type="password" id="password" class="form-control" placeholder="At least 8 characters" required minlength="8" />
+          <span class="form-error" id="passwordErr">Password must be at least 8 characters.</span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirm_password">Confirm Password <span class="required">*</span></label>
+          <input type="password" id="confirm_password" class="form-control" placeholder="Re-enter password" required />
+          <span class="form-error" id="confirmErr">Passwords do not match.</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="submitBtn">Create Account</button>
+      </form>
+
+      <div class="auth-switch">
+        Already have an account? <a href="/login.html">Sign in</a>
+      </div>
+      <div class="auth-switch mt-8">
+        Registering an organization? <a href="/org-signup.html">Register here</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/signup.js"></script>
+</body>
+</html>
