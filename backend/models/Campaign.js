@@ -1,17 +1,18 @@
-const db = require('../config/database');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-const Campaign = {
-    // جلب بيانات حملة معينة
-    findById: (id, callback) => {
-        const query = 'SELECT * FROM campaigns WHERE id = ?';
-        db.query(query, [id], callback);
-    },
+const Campaign = sequelize.define('Campaign', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  title: { type: DataTypes.STRING(255), allowNull: false },
+  description: { type: DataTypes.TEXT },
+  goal_amount: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+  current_amount: { type: DataTypes.DECIMAL(10, 2), defaultValue: 0 },
+  status: { type: DataTypes.ENUM('pending', 'active', 'completed', 'rejected'), defaultValue: 'pending' },
+}, {
+  tableName: 'campaigns',
+  timestamps: true,
+  createdAt: 'created_at',
+  updatedAt: false,
+});
 
-    // تحديث المبلغ الحالي للحملة عند وصول تبرع جديد
-    updateAmount: (id, amount, callback) => {
-        const query = 'UPDATE campaigns SET current_amount = current_amount + ? WHERE id = ?';
-        db.query(query, [amount, id], callback);
-    }
-};
-
- Berlaku.exports = Campaign;
+module.exports = Campaign;
