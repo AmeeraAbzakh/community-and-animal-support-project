@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-
+app.use(express.json());
 // 1. استدعاء الموديلات
 const User = require('./models/User');
 const Campaign = require('./models/Campaign');
