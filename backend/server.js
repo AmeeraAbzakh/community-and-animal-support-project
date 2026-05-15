@@ -1,35 +1,45 @@
+require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
+
 const app = express();
+app.use(cors());
 app.use(express.json());
-// 1. استدعاء الموديلات
+
+// Models
 const User = require('./models/User');
 const Campaign = require('./models/Campaign');
-const CaseScore = require('./models/CaseScore'); 
+const CaseScore = require('./models/CaseScore');
 const Donation = require('./models/Donation');
 
-// 2. إعداد العلاقات (Associations)
+// Associations
 Campaign.hasOne(CaseScore, { foreignKey: 'campaignId' });
 CaseScore.belongsTo(Campaign, { foreignKey: 'campaignId' });
-
 Campaign.hasMany(Donation, { foreignKey: 'campaignId' });
 Donation.belongsTo(Campaign, { foreignKey: 'campaignId' });
-
 User.hasMany(Campaign, { foreignKey: 'userId' });
 Campaign.belongsTo(User, { foreignKey: 'userId' });
-
 User.hasMany(Donation, { foreignKey: 'userId' });
 Donation.belongsTo(User, { foreignKey: 'userId' });
 
-// --- الأسطر الجديدة اللي لازم تكون موجودة ---
-app.use(express.json()); // عشان السيرفر يقدر يقرأ البيانات اللي بنبعتها
-app.use('/api/campaigns', require('./routes/campaigns')); // ربط ملف الـ Routes
-// ------------------------------------------
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/campaigns', require('./routes/campaigns'));
+app.use('/api/donations', require('./routes/donations'));
+app.use('/api/cases', require('./routes/cases'));
 
-app.get('/', (req, res) => {
-  res.send('Revobin Server is Ready');
-});
-
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:3000`);
-});
+// DB connection + start server
+const db = require('./config/database');
+db.authenticate()
+  .then(() => {
+    console.log('Database connected');
+    return db.sync({ alter: true });
+  })
+  .then(() => {
+    app.listen(process.env.PORT || 3000, () => {
+      console.log('Server is running on http://localhost:3000');
+    });
+  })
+  .catch(err => {
+    console.log('Database error:', err.message);
+  });

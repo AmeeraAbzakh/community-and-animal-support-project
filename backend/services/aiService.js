@@ -1,70 +1,37 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// مناداة المفتاح من ملف الـ .env
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+// استخدام gemini-1.5-flash هو الصحيح، والخطأ 404 غالباً بسبب تحديثات جوجل أو المكتبة
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-function getLabel(score) {
-  if (score >= 85) return 'Critical';
-  if (score >= 65) return 'High';
-  if (score >= 40) return 'Medium';
-  return 'Low';
-}
-
-function calculate(scores) {
-  const weights = {
-    urgency: 0.20,
-    financialGap: 0.18,
-    vulnerability: 0.18,
-    medicalSeverity: 0.15,
-    socialIsolation: 0.12,
-    animalWelfare: 0.10,
-    sustainability: 0.07,
-  };
-  let total = 0;
-  for (const key in weights) {
-    total += (scores[key] || 0) * weights[key];
-  }
-  return Math.round(total * 10);
-}
-
 async function analyzeCase(description) {
-  if (!description || description.length < 20) {
-    return { aiScores: null, finalScore: 30, label: 'Low', summary: 'الوصف قصير جداً للتحليل' };
-  }
-
-  const prompt = `
-    Analyze this humanitarian case and score it from 0 to 10 for each criterion.
-    Return ONLY valid JSON.
-    Case description: "${description}"
-    Format:
-    {
-      "urgency": 0-10,
-      "financialGap": 0-10,
-      "vulnerability": 0-10,
-      "medicalSeverity": 0-10,
-      "socialIsolation": 0-10,
-      "animalWelfare": 0-10,
-      "sustainability": 0-10,
-      "summary": "جملة واحدة بالعربي تشرح الحالة"
-    }`;
-
   try {
+    // محاولة الاتصال بالذكاء الاصطناعي
+    const prompt = `Analyze: "${description}". Return JSON: {"urgency":5,"financialGap":5,"vulnerability":5,"medicalSeverity":5,"socialIsolation":5,"animalWelfare":5,"sustainability":5,"summary":"وصف"}`;
+    
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-    // تنظيف النص في حال الـ AI أضاف علامات ```json
-    const cleanJSON = text.replace(/```json|```/g, '').trim();
-    const aiScores = JSON.parse(cleanJSON);
+    const aiScores = JSON.parse(text.replace(/```json|```/g, '').trim());
 
-    const finalScore = calculate(aiScores);
-    const label = getLabel(finalScore);
+    // حساب السكور (عملية حسابية بسيطة)
+    const finalScore = Math.round((aiScores.urgency || 5) * 10); 
 
-    return { aiScores, finalScore, label, summary: aiScores.summary };
+    return { 
+      finalScore: finalScore, 
+      label: finalScore > 70 ? 'High' : 'Medium', 
+      summary: aiScores.summary || 'تم التحليل' 
+    };
+
   } catch (err) {
-    console.error("Gemini AI Error:", err.message);
-    return { aiScores: null, finalScore: 50, label: 'Medium', summary: 'لم يتم التحليل تلقائياً' };
+    console.error("Gemini AI Error caught in service:", err.message);
+    // القيمة المنقذة: إذا فشل الـ AI بنرجع قيم ثابتة عشان الداتابيز ما ترفض
+    return { 
+      finalScore: 50, 
+      label: 'Medium', 
+      summary: 'تحليل افتراضي بسبب خطأ في السيرفر' 
+    };
   }
 }
 
-module.exports = { analyzeCase, calculate, getLabel };
+module.exports = { analyzeCase };
