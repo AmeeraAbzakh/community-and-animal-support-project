@@ -80,7 +80,4 @@ router.get('/user/mine', checkToken, async (req, res) => {
   }
 });
 
-Campaign.belongsTo(User, { foreignKey: 'user_id', as: 'creator' });
-User.hasMany(Campaign, { foreignKey: 'user_id', as: 'campaigns' });
-
 module.exports = router;
