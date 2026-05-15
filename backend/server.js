@@ -1,34 +1,45 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
-const { sequelize } = require('./config/database');
-
-const authRoutes = require('./routes/auth');
-const campaignRoutes = require('./routes/campaigns');
-const donationRoutes = require('./routes/donations');
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
-app.use('/api/campaigns', campaignRoutes);
-app.use('/api/donations', donationRoutes);
+// Models
+const User = require('./models/User');
+const Campaign = require('./models/Campaign');
+const CaseScore = require('./models/CaseScore');
+const Donation = require('./models/Donation');
 
-app.use(express.static(path.join(__dirname, 'public')));
+// Associations
+Campaign.hasOne(CaseScore, { foreignKey: 'campaignId' });
+CaseScore.belongsTo(Campaign, { foreignKey: 'campaignId' });
+Campaign.hasMany(Donation, { foreignKey: 'campaignId' });
+Donation.belongsTo(Campaign, { foreignKey: 'campaignId' });
+User.hasMany(Campaign, { foreignKey: 'userId' });
+Campaign.belongsTo(User, { foreignKey: 'userId' });
+User.hasMany(Donation, { foreignKey: 'userId' });
+Donation.belongsTo(User, { foreignKey: 'userId' });
 
-app.get('/', (req, res) => {
-  res.send('Revobin Server is Ready! 🚀');
-});
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/campaigns', require('./routes/campaigns'));
+app.use('/api/donations', require('./routes/donations'));
+app.use('/api/cases', require('./routes/cases'));
 
-const PORT = process.env.PORT || 3000;
-
-sequelize.sync({ alter: false }).then(() => {
-  console.log('Database connected!');
-  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-}).catch(err => {
-  console.error('DB Error:', err.message);
-  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-});
+// DB + Server
+const db = require('./config/database');
+db.authenticate()
+  .then(() => {
+    console.log('Database connected');
+    return db.sync({ alter: true });
+  })
+  .then(() => {
+    app.listen(process.env.PORT || 3000, () => {
+      console.log('Server is running on http://localhost:3000');
+    });
+  })
+  .catch(err => {
+    console.log('Database error:', err.message);
+  });

@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('../config/database');
-// 1. لازم تستوردي موديل المستخدم هنا عشان العلاقات تشتغل
-const User = require('./User'); 
+const sequelize = require('../config/database');
+
 
 const Campaign = sequelize.define('Campaign', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -25,8 +24,7 @@ const Campaign = sequelize.define('Campaign', {
   updatedAt: false,
 });
 
-// 2. تعريف العلاقات (تأكدي أن اسم الموديل User مستورد فوق)
-Campaign.belongsTo(User, { foreignKey: 'user_id', as: 'creator' });
-User.hasMany(Campaign, { foreignKey: 'user_id', as: 'campaigns' });
+
+
 
 module.exports = Campaign;

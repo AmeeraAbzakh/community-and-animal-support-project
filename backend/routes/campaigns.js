@@ -1,82 +1,61 @@
 const express = require('express');
-const { Op } = require('sequelize');
-const Campaign = require('../models/Campaign');
-const User = require('../models/User');
-const checkToken = require('../middleware/checkToken');
-const PriorityCalculator = require('../utils/PriorityCalculator');
-
 const router = express.Router();
+const Campaign = require('../models/Campaign');
+const CaseScore = require('../models/CaseScore');
+const aiService = require('../services/aiService');
 
-router.get('/', async (req, res) => {
+// 1. إنشاء حملة جديدة مع تحليل الـ AI
+router.post('/create', async (req, res) => {
   try {
-    const { category, status } = req.query;
-    const where = {};
-    if (category) where.category = category;
-    if (status) where.status = status;
-    else where.status = 'active';
+    const { title, description, goal_amount, user_id } = req.body;
 
-    const campaigns = await Campaign.findAll({
-      where,
-      include: [{ model: User, as: 'creator', attributes: ['id', 'full_name', 'role'] }],
-      order: [['priority_score', 'DESC']],
-    });
-    res.json(campaigns);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.get('/:id', async (req, res) => {
-  try {
-    const campaign = await Campaign.findByPk(req.params.id, {
-      include: [{ model: User, as: 'creator', attributes: ['id', 'full_name', 'role'] }],
-    });
-    if (!campaign) return res.status(404).json({ error: 'Campaign not found' });
-    res.json(campaign);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.post('/', checkToken, async (req, res) => {
-  try {
-    const { title, description, category, urgency, income_level, health_condition, family_size, location, goal_amount } = req.body;
-
-    if (!title || !description || !category || !urgency || !income_level || !health_condition || !family_size || !location || !goal_amount) {
-      return res.status(400).json({ error: 'All fields are required' });
-    }
-
-    const priority_score = PriorityCalculator.calculate({ health_condition, income_level, family_size: parseInt(family_size), urgency, category });
-
+    // حفظ الحملة
     const campaign = await Campaign.create({
-      user_id: req.user.id,
       title,
       description,
-      category,
-      urgency,
-      income_level,
-      health_condition,
-      family_size: parseInt(family_size),
-      location,
-      goal_amount: parseFloat(goal_amount),
-      priority_score,
+      goal_amount,
+      user_id
     });
 
-    res.status(201).json(campaign);
+    // نداء الـ AI
+    const aiResult = await aiService.analyzeCase(description);
+
+    // تخزين النتيجة - تم تعديل الحقل لـ finalScore ليتطابق مع الـ Model والداتابيز
+    await CaseScore.create({
+      campaignId: campaign.id,
+      finalScore: aiResult?.finalScore || 50, // حماية: إذا فشل الـ AI يأخذ 50 بدل null
+      label: aiResult?.label || 'Medium',
+      summary: aiResult?.summary || 'تم التخزين بنجاح'
+    });
+
+    res.status(201).json({
+      message: 'Campaign created and analyzed successfully',
+      campaign,
+      analysis: aiResult?.label || 'Pending'
+    });
+
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Error in creating campaign:', err);
+    res.status(500).json({ 
+      message: 'خطأ في إنشاء الحملة',
+      error: err.message 
+    });
   }
 });
 
-router.get('/user/mine', checkToken, async (req, res) => {
+// 2. جلب كل الحملات (تعديل الحقول هنا أيضاً)
+router.get('/', async (req, res) => {
   try {
     const campaigns = await Campaign.findAll({
-      where: { user_id: req.user.id },
-      order: [['created_at', 'DESC']],
+      include: [{
+        model: CaseScore,
+        attributes: ['finalScore', 'label', 'summary'] // تعديل لـ finalScore
+      }]
     });
     res.json(campaigns);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    res.status(500).json({ message: 'حدث خطأ في جلب البيانات' });
   }
 });
 
