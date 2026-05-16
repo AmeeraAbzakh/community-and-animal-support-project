@@ -12,11 +12,11 @@ const Campaign = require('./models/Campaign');
 const CaseScore = require('./models/CaseScore');
 const Donation = require('./models/Donation');
 
-// Associations
+// Associations (ضفنا constraints: false عشان نتخطى عند الـ Donation والـ Campaign)
 Campaign.hasOne(CaseScore, { foreignKey: 'campaignId' });
 CaseScore.belongsTo(Campaign, { foreignKey: 'campaignId' });
-Campaign.hasMany(Donation, { foreignKey: 'campaignId' });
-Donation.belongsTo(Campaign, { foreignKey: 'campaignId' });
+Campaign.hasMany(Donation, { foreignKey: 'campaignId', constraints: false });
+Donation.belongsTo(Campaign, { foreignKey: 'campaignId', constraints: false });
 User.hasMany(Campaign, { foreignKey: 'userId' });
 Campaign.belongsTo(User, { foreignKey: 'userId' });
 User.hasMany(Donation, { foreignKey: 'userId' });
@@ -33,7 +33,8 @@ const db = require('./config/database');
 db.authenticate()
   .then(() => {
     console.log('Database connected');
-    return db.sync({ alter: true });
+    // غيرناها لـ sync عادي عشان يطنش الهواش مع MySQL على الجداول القديمة
+    return db.sync(); 
   })
   .then(() => {
     app.listen(process.env.PORT || 3000, () => {
