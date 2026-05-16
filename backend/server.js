@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public')); // هاد السطر اللي بخلّي المتصفح يشوف شاشات الـ HTML ويفتحها
 
 // Models
 const User = require('./models/User');
@@ -12,7 +13,7 @@ const Campaign = require('./models/Campaign');
 const CaseScore = require('./models/CaseScore');
 const Donation = require('./models/Donation');
 
-// Associations (ضفنا constraints: false عشان نتخطى عند الـ Donation والـ Campaign)
+// Associations
 Campaign.hasOne(CaseScore, { foreignKey: 'campaignId' });
 CaseScore.belongsTo(Campaign, { foreignKey: 'campaignId' });
 Campaign.hasMany(Donation, { foreignKey: 'campaignId', constraints: false });
@@ -33,7 +34,6 @@ const db = require('./config/database');
 db.authenticate()
   .then(() => {
     console.log('Database connected');
-    // غيرناها لـ sync عادي عشان يطنش الهواش مع MySQL على الجداول القديمة
     return db.sync(); 
   })
   .then(() => {
