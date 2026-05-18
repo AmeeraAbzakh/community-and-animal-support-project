@@ -3,132 +3,110 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Supporter Sign Up - Community & Animal Support</title>
+  <title>Sign Up - Revobin</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
   <style>
     :root {
-      --green: #2d7a3a;
-      --green-light: #3d9e4e;
-      --green-pale: #eaf4ec;
-      --orange: #e8722a;
-      --text: #1a2e1a;
-      --muted: #6b7f6b;
-      --border: #dde5d8;
-      --bg: #f4f6f3;
+      --green: #2d7a3a; --green-light: #3d9e4e; --green-pale: #eaf4ec;
+      --orange: #e8722a; --orange-pale: #fdf1ea;
+      --blue: #1a6b8a; --blue-pale: #e8f4f9;
+      --text: #1a2e1a; --muted: #6b7f6b; --border: #dde5d8; --bg: #f4f6f3;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: var(--bg);
-      min-height: 100vh;
-      display: flex; justify-content: center;
-      align-items: flex-start; padding: 40px 20px;
-    }
+    body { font-family: 'Montserrat', sans-serif; background: var(--bg); min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 40px 20px; }
     main { width: 100%; max-width: 580px; }
 
-    .back {
-      display: inline-flex; align-items: center; gap: 7px;
-      font-size: 12px; font-weight: 600; color: var(--muted);
-      text-decoration: none; margin-bottom: 24px; transition: color 0.2s;
-    }
+    .back { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: none; margin-bottom: 24px; transition: color 0.2s; }
     .back:hover { color: var(--green); }
 
     .card { background: white; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-
-    .card-header {
-      background: var(--green-pale); border-bottom: 1px solid var(--border);
-      padding: 24px 32px; display: flex; align-items: center; gap: 14px;
-    }
-    .header-icon {
-      width: 48px; height: 48px; border-radius: 12px;
-      background: var(--green); color: white;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px; flex-shrink: 0;
-    }
+    .card-header { background: var(--green-pale); border-bottom: 1px solid var(--border); padding: 24px 32px; display: flex; align-items: center; gap: 14px; }
+    .header-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .card-header h1 { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
     .card-header p { font-size: 12px; color: var(--muted); }
-
     .card-body { padding: 32px; }
 
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
     .row.full { grid-template-columns: 1fr; }
-
     .field { display: flex; flex-direction: column; gap: 6px; }
     .field label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
 
     .input-box { position: relative; }
     .input-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #aaa; font-size: 13px; pointer-events: none; }
-    .input-box input {
+    .input-box input, .input-box select {
       width: 100%; padding: 11px 14px 11px 36px;
       border: 1.5px solid var(--border); border-radius: 8px;
       font-family: 'Montserrat', sans-serif; font-size: 13px;
-      color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s;
+      color: var(--text); background: var(--bg); outline: none;
+      transition: border-color 0.2s; appearance: none;
     }
-    .input-box input:focus { border-color: var(--green); }
+    .input-box input:focus, .input-box select:focus { border-color: var(--green); }
     .input-box input::placeholder { color: #bbb; }
 
-    .divider {
-      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: var(--muted);
-      margin: 24px 0 16px; display: flex; align-items: center; gap: 10px;
+    /* role toggle */
+    .role-toggle { display: flex; gap: 10px; margin-bottom: 14px; }
+    .role-btn {
+      flex: 1; padding: 12px; border: 1.5px solid var(--border);
+      border-radius: 10px; background: var(--bg); cursor: pointer;
+      font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
+      color: var(--muted); display: flex; align-items: center; justify-content: center;
+      gap: 8px; transition: all 0.2s;
     }
+    .role-btn.selected { border-color: var(--green); background: var(--green-pale); color: var(--green); }
+    .role-btn:hover { border-color: var(--green); color: var(--green); }
+
+    .divider { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin: 24px 0 16px; display: flex; align-items: center; gap: 10px; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
     .strength-bar { display: flex; gap: 4px; margin-top: 5px; }
     .strength-bar span { flex: 1; height: 3px; border-radius: 2px; background: var(--border); transition: background 0.3s; }
 
     .terms { display: flex; align-items: flex-start; gap: 10px; margin-top: 20px; font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
-    .terms input[type="checkbox"] {
-      appearance: none; -webkit-appearance: none;
-      width: 16px; height: 16px; min-width: 16px;
-      border: 1.5px solid var(--border); border-radius: 4px;
-      background: var(--bg); cursor: pointer; position: relative; margin-top: 1px; transition: all 0.2s;
-    }
+    .terms input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; min-width: 16px; border: 1.5px solid var(--border); border-radius: 4px; background: var(--bg); cursor: pointer; position: relative; margin-top: 1px; transition: all 0.2s; }
     .terms input:checked { background: var(--green); border-color: var(--green); }
-    .terms input:checked::after {
-      content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
-      font-size: 8px; color: white; position: absolute;
-      top: 50%; left: 50%; transform: translate(-50%, -50%);
-    }
+    .terms input:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 8px; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
     .terms a { color: var(--green); font-weight: 600; text-decoration: none; }
 
-    .btn-submit {
-      width: 100%; margin-top: 16px; padding: 13px;
-      background: var(--green); color: white; border: none;
-      border-radius: 8px; font-family: 'Montserrat', sans-serif;
-      font-size: 14px; font-weight: 700; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
-    }
+    .btn-submit { width: 100%; margin-top: 16px; padding: 13px; background: var(--green); color: white; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
     .btn-submit:hover { background: var(--green-light); }
     .btn-submit:disabled { background: var(--muted); cursor: not-allowed; }
 
     .error-msg { color: #e74c3c; font-size: 12px; text-align: center; margin-top: 10px; display: none; }
-
     .login-link { text-align: center; margin-top: 16px; font-size: 12px; color: var(--muted); }
     .login-link a { color: var(--green); font-weight: 600; text-decoration: none; }
 
-    @media (max-width: 560px) {
-      .row { grid-template-columns: 1fr; }
-      .card-body { padding: 20px; }
-      .card-header { padding: 20px; }
-    }
+    @media (max-width: 560px) { .row { grid-template-columns: 1fr; } .card-body { padding: 20px; } .card-header { padding: 20px; } }
   </style>
 </head>
 <body>
 <main>
-  <a class="back" href="signup.html"><i class="fa-solid fa-arrow-left"></i> Back to account types</a>
+  <a class="back" href="home.html"><i class="fa-solid fa-arrow-left"></i> Back to home</a>
 
   <div class="card">
     <div class="card-header">
-      <div class="header-icon"><i class="fa-solid fa-user"></i></div>
+      <div class="header-icon"><i class="fa-solid fa-user-plus"></i></div>
       <div>
-        <h1>Supporter Account</h1>
-        <p>Join us to donate and help campaigns.</p>
+        <h1>Create Your Account</h1>
+        <p>Join Revobin and start making a difference.</p>
       </div>
     </div>
 
     <div class="card-body">
+      <!-- Role Selection -->
+      <div class="field" style="margin-bottom:14px">
+        <label>I am joining as a</label>
+      </div>
+      <div class="role-toggle">
+        <button class="role-btn selected" onclick="selectRole('user', this)">
+          <i class="fa-solid fa-user"></i> Supporter / Donor
+        </button>
+        <button class="role-btn" onclick="selectRole('organization', this)">
+          <i class="fa-solid fa-building-ngo"></i> Organization
+        </button>
+      </div>
+      <input type="hidden" id="role" value="user" />
+
       <div class="row">
         <div class="field">
           <label>First Name</label>
@@ -204,7 +182,14 @@
   </div>
 </main>
 
+<script src="js/auth.js"></script>
 <script>
+  function selectRole(role, btn) {
+    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('role').value = role;
+  }
+
   function checkStrength() {
     const pw = document.getElementById('pw').value;
     const bars = document.getElementById('strength').querySelectorAll('span');
@@ -214,76 +199,7 @@
     if (/[A-Z]/.test(pw)) score++;
     if (/[0-9]/.test(pw)) score++;
     if (/[^A-Za-z0-9]/.test(pw)) score++;
-    bars.forEach((b, i) => {
-      b.style.background = i < score ? colors[score - 1] : '#dde5d8';
-    });
-  }
-
-  async function handleRegister() {
-    const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const password = document.getElementById('pw').value;
-    const pw2 = document.getElementById('pw2').value;
-    const terms = document.getElementById('terms').checked;
-    const errorMsg = document.getElementById('errorMsg');
-    const btn = document.getElementById('submitBtn');
-
-    errorMsg.style.display = 'none';
-
-    if (!firstName || !email || !password) {
-      errorMsg.textContent = 'Please fill in all required fields.';
-      errorMsg.style.display = 'block';
-      return;
-    }
-
-    if (password !== pw2) {
-      errorMsg.textContent = 'Passwords do not match.';
-      errorMsg.style.display = 'block';
-      return;
-    }
-
-    if (!terms) {
-      errorMsg.textContent = 'Please agree to the Terms of Service.';
-      errorMsg.style.display = 'block';
-      return;
-    }
-
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating account...';
-
-    try {
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          full_name: firstName + ' ' + lastName,
-          email,
-          phone,
-          password,
-          role: 'user'
-        })
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert('Account created successfully! Please login.');
-        window.location.href = 'login.html';
-      } else {
-        errorMsg.textContent = data.message || 'Something went wrong.';
-        errorMsg.style.display = 'block';
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-arrow-right"></i> Create Account';
-      }
-
-    } catch (err) {
-      errorMsg.textContent = 'Could not connect to server.';
-      errorMsg.style.display = 'block';
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-arrow-right"></i> Create Account';
-    }
+    bars.forEach((b, i) => { b.style.background = i < score ? colors[score - 1] : '#dde5d8'; });
   }
 </script>
 </body>

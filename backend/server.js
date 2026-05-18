@@ -1,11 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path'); 
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // هاد السطر اللي بخلّي المتصفح يشوف شاشات الـ HTML ويفتحها
+
+
+app.use(express.static(path.join(__dirname, 'public'))); 
 
 // Models
 const User = require('./models/User');
@@ -29,12 +32,12 @@ app.use('/api/campaigns', require('./routes/campaigns'));
 app.use('/api/donations', require('./routes/donations'));
 app.use('/api/cases', require('./routes/cases'));
 
-// DB + Server
+
 const db = require('./config/database');
 db.authenticate()
   .then(() => {
-    console.log('Database connected');
-    return db.sync(); 
+    console.log('Database connected successfully.');
+    return db.sync();
   })
   .then(() => {
     app.listen(process.env.PORT || 3000, () => {

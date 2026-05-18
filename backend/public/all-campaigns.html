@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>All Campaigns - Community and Animal Support</title>
+  <title>All Campaigns - Community & Animal Support</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
   <style>
@@ -24,8 +24,7 @@
 
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(255,255,255,0.95);
-      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.95); border-bottom: 1px solid var(--border);
       padding: 0 40px; height: 64px;
       display: flex; align-items: center; justify-content: space-between;
     }
@@ -34,7 +33,10 @@
     .logo i.orange { color: var(--orange); }
     .logo span { font-size: 13px; font-weight: 800; color: var(--text); letter-spacing: 1px; }
     .nav-btns { display: flex; gap: 10px; }
-    .btn-solid { padding: 7px 18px; border: none; border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: white; background: var(--green); text-decoration: none; }
+    .btn-outline { padding: 7px 18px; border: 1.5px solid var(--green); border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--green); background: transparent; text-decoration: none; transition: background 0.2s; }
+    .btn-outline:hover { background: var(--green-pale); }
+    .btn-solid { padding: 7px 18px; border: none; border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: white; background: var(--green); text-decoration: none; transition: background 0.2s; }
+    .btn-solid:hover { background: var(--green-light); }
 
     .page { max-width: 1100px; margin: 0 auto; padding: 84px 24px 60px; }
 
@@ -42,7 +44,7 @@
     .page-header h1 { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
     .page-header p { font-size: 13px; color: var(--muted); }
 
-    .filters { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .filters { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; align-items: center; }
     .filter-btn {
       padding: 7px 16px; border: 1.5px solid var(--border);
       border-radius: 20px; font-family: 'Montserrat', sans-serif;
@@ -50,15 +52,16 @@
       cursor: pointer; transition: all 0.2s; color: var(--text);
     }
     .filter-btn.active { background: var(--green); color: white; border-color: var(--green); }
-    .filter-btn.critical.active { background: #e74c3c; border-color: #e74c3c; }
-    .filter-btn.high.active { background: var(--orange); border-color: var(--orange); }
-    .filter-btn.medium.active { background: #f0c040; border-color: #f0c040; color: #333; }
+    .filter-btn.f-critical.active { background: #e74c3c; border-color: #e74c3c; }
+    .filter-btn.f-high.active { background: var(--orange); border-color: var(--orange); }
+    .filter-btn.f-medium.active { background: #f0c040; border-color: #f0c040; color: #333; }
+
+    .results-count { margin-left: auto; font-size: 12px; color: var(--muted); font-weight: 600; }
 
     .priority-badge {
       display: inline-flex; align-items: center; gap: 4px;
       padding: 3px 10px; border-radius: 20px;
       font-size: 10px; font-weight: 800; margin-bottom: 8px;
-      text-transform: uppercase;
     }
     .priority-badge.critical { background: #fde8e8; color: #e74c3c; }
     .priority-badge.high { background: var(--orange-pale); color: var(--orange); }
@@ -69,14 +72,11 @@
 
     .camp-card {
       background: white; border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden; transition: all 0.2s; cursor: pointer;
+      border-radius: 12px; overflow: hidden; transition: all 0.2s;
     }
-    .camp-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .camp-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); cursor: pointer; }
 
-    .camp-img {
-      height: 140px; display: flex; align-items: center;
-      justify-content: center; font-size: 48px;
-    }
+    .camp-img { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 52px; }
     .camp-img.green { background: linear-gradient(135deg, #1e5427, #2d7a3a); }
     .camp-img.orange { background: linear-gradient(135deg, #c05a1a, #e8722a); }
     .camp-img.blue { background: linear-gradient(135deg, #124d66, #1a6b8a); }
@@ -100,7 +100,7 @@
     }
     .btn-donate:hover { background: var(--green-light); }
 
-    .loading { text-align: center; padding: 60px; color: var(--muted); }
+    .loading { text-align: center; padding: 60px; color: var(--muted); font-size: 13px; }
 
     @media (max-width: 768px) {
       .grid { grid-template-columns: 1fr; }
@@ -115,77 +115,94 @@
     <a class="logo" href="home.html">
       <i class="fa-solid fa-paw"></i>
       <i class="fa-solid fa-heart orange"></i>
-      <span>Community and Animal Support</span>
+      <span>Community Support</span>
     </a>
     <div class="nav-btns">
-      <a href="create-campaign.html" class="btn-solid">+ Create Campaign</a>
+      <a href="login.html" class="btn-outline">Sign In</a>
+      <a href="signup.html" class="btn-solid">Join Now</a>
     </div>
   </nav>
 
   <div class="page">
     <div class="page-header">
       <h1>All Campaigns</h1>
-      <p>Sorted by AI priority — most urgent cases first</p>
+      <p>Sorted by AI priority score — most urgent cases appear first</p>
     </div>
 
     <div class="filters">
-      <button class="filter-btn active" onclick="filterCamps('all', this)">All</button>
-      <button class="filter-btn critical" onclick="filterCamps('critical', this)">🔴 Critical</button>
-      <button class="filter-btn high" onclick="filterCamps('high', this)">🟠 High</button>
-      <button class="filter-btn medium" onclick="filterCamps('medium', this)">🟡 Medium</button>
-      <button class="filter-btn" onclick="filterCamps('low', this)">🟢 Low</button>
+      <button class="filter-btn active" onclick="filterBy('all', this)">All</button>
+      <button class="filter-btn f-critical" onclick="filterBy('critical', this)">🔴 Critical</button>
+      <button class="filter-btn f-high" onclick="filterBy('high', this)">🟠 High</button>
+      <button class="filter-btn f-medium" onclick="filterBy('medium', this)">🟡 Medium</button>
+      <button class="filter-btn" onclick="filterBy('low', this)">🟢 Low</button>
+      <button class="filter-btn" onclick="filterBy('human', this)">🤝 Human</button>
+      <button class="filter-btn" onclick="filterBy('animal', this)">🐾 Animal</button>
+      <span class="results-count" id="resultsCount"></span>
     </div>
 
     <div class="grid" id="grid">
-      <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+      <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading campaigns...</div>
     </div>
   </div>
 
   <script>
-    let allCampaigns = [];
-    const colors = ['green', 'orange', 'blue'];
+    let allCases = [];
+    const imgColors = ['green', 'orange', 'blue'];
 
-    async function loadCampaigns() {
+    const scoreColors = {
+      critical: '#e74c3c',
+      high: '#e8722a',
+      medium: '#f0c040',
+      low: '#2d7a3a'
+    };
+
+    async function loadCases() {
       try {
-        const res = await fetch('http://localhost:3000/api/cases/priority');
-        allCampaigns = await res.json();
-        showCampaigns(allCampaigns);
+        const res = await fetch('/api/cases/priority');
+        allCases = await res.json();
+        showCases(allCases);
       } catch (err) {
         document.getElementById('grid').innerHTML =
           '<div class="loading">Could not load campaigns. Is the server running?</div>';
       }
     }
 
-    function showCampaigns(list) {
+    function showCases(list) {
       const grid = document.getElementById('grid');
+      document.getElementById('resultsCount').textContent = list.length + ' campaigns';
+
       if (list.length === 0) {
         grid.innerHTML = '<div class="loading">No campaigns found.</div>';
         return;
       }
+
       grid.innerHTML = list.map((c, i) => {
-        const goalAttr = Number(c.goal_amount) || 0;
-        const raisedAttr = Number(c.current_amount) || 0;
-        const pct = goalAttr > 0 ? Math.min(Math.round((raisedAttr / goalAttr) * 100), 100) : 0;
-        
-        const urgencyLabel = c.urgency ? c.urgency.toLowerCase() : 'low';
-        const scoreVal = c.priority_score || 0;
-        const categoryEmoji = c.category === 'human' ? '🧑' : '🐾';
+        const score = c.CaseScore;
+        const finalScore = score?.finalScore ?? c.priority_score ?? 0;
+        const label = (score?.label ?? c.urgency ?? 'low').toLowerCase();
+        const color = scoreColors[label] || '#999';
+
+        const pct = c.goal_amount > 0
+          ? Math.round(((c.current_amount || 0) / c.goal_amount) * 100)
+          : 0;
 
         return `
           <div class="camp-card" onclick="window.location.href='campaign-details.html?id=${c.id}'">
-            <div class="camp-img ${colors[i % 3]}">
-              <span>${categoryEmoji}</span>
+            <div class="camp-img ${imgColors[i % 3]}">
+              <span>${c.category === 'animal' ? '🐾' : '🤝'}</span>
             </div>
             <div class="camp-body">
-              <div class="priority-badge ${urgencyLabel}">${urgencyLabel} — ${scoreVal} pts</div>
+              <div class="priority-badge ${label}">
+                ${label.toUpperCase()} — ${finalScore}/100
+              </div>
               <h3>${c.title}</h3>
               <p>${c.description ? c.description.substring(0, 80) + '...' : ''}</p>
               <div class="progress-bar">
-                <div class="progress-fill" style="width:${pct}%"></div>
+                <div class="progress-fill" style="background:${color};width:${pct}%"></div>
               </div>
               <div class="camp-nums">
-                <span class="raised">JD ${raisedAttr.toLocaleString()} raised</span>
-                <span class="goal">of JD ${goalAttr.toLocaleString()}</span>
+                <span class="raised">JD ${c.current_amount || 0} raised</span>
+                <span class="goal">of JD ${c.goal_amount || 0}</span>
               </div>
               <a href="campaign-details.html?id=${c.id}" class="btn-donate">Donate Now</a>
             </div>
@@ -194,17 +211,23 @@
       }).join('');
     }
 
-    function filterCamps(label, btn) {
+    function filterBy(value, btn) {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      if (label === 'all') {
-        showCampaigns(allCampaigns);
+
+      if (value === 'all') {
+        showCases(allCases);
+      } else if (value === 'human' || value === 'animal') {
+        showCases(allCases.filter(c => c.category === value));
       } else {
-        showCampaigns(allCampaigns.filter(c => c.urgency && c.urgency.toLowerCase() === label));
+        showCases(allCases.filter(c => {
+          const label = (c.CaseScore?.label ?? c.urgency ?? '').toLowerCase();
+          return label === value;
+        }));
       }
     }
 
-    loadCampaigns();
+    loadCases();
   </script>
 
 </body>

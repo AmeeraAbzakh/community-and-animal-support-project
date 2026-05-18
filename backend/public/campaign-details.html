@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campaign Details - Revobin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    :root {
+      --green: #2d7a3a; --green-light: #3d9e4e; --green-pale: #eaf4ec; --green-dark: #1e5427;
+      --orange: #e8722a; --orange-pale: #fdf1ea;
+      --blue: #1a6b8a; --blue-pale: #e8f4f9;
+      --text: #1a2e1a; --muted: #6b7f6b; --border: #dde5d8; --bg: #f4f6f3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.95); border-bottom: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo i { color: var(--green); font-size: 16px; }
+    .logo i.orange { color: var(--orange); }
+    .logo span { font-size: 13px; font-weight: 800; color: var(--text); }
+    .nav-btns { display: flex; gap: 10px; }
+    .btn-outline { padding: 7px 18px; border: 1.5px solid var(--green); border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--green); background: transparent; text-decoration: none; }
+    .btn-solid { padding: 7px 18px; border: none; border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: white; background: var(--green); text-decoration: none; }
+
+    .camp-hero { margin-top: 64px; height: 300px; background: var(--green-dark); position: relative; display: flex; align-items: flex-end; overflow: hidden; }
+    .camp-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(255,255,255,0.05) 0%, transparent 60%); }
+    .hero-emoji { position: absolute; right: 80px; top: 50%; transform: translateY(-50%); font-size: 120px; opacity: 0.18; }
+    .hero-content { position: relative; padding: 36px 60px; width: 100%; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 14px; }
+    .breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; }
+    .breadcrumb a:hover { color: white; }
+    .camp-type { display: inline-block; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.85); letter-spacing: 1px; margin-bottom: 10px; }
+    .hero-content h1 { font-family: 'Lora', serif; font-size: 26px; font-weight: 600; color: white; line-height: 1.3; max-width: 600px; }
+
+    .page { max-width: 960px; margin: 0 auto; padding: 40px 24px 60px; display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start; }
+
+    .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 18px; }
+    .card h2 { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .card h2 i { color: var(--green); }
+
+    /* progress */
+    .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
+    .progress-fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.8s ease; }
+    .progress-nums { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 16px; }
+    .progress-nums .raised { font-weight: 800; }
+    .progress-nums .goal { color: var(--muted); }
+    .three-stats { display: flex; gap: 24px; }
+    .mini-stat .val { font-size: 20px; font-weight: 800; }
+    .mini-stat .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* AI score box */
+    .ai-score-box { border-radius: 10px; padding: 16px 18px; margin-bottom: 18px; border: 1.5px solid; }
+    .ai-score-box.critical { background: #fde8e8; border-color: #e74c3c; }
+    .ai-score-box.high { background: var(--orange-pale); border-color: var(--orange); }
+    .ai-score-box.medium { background: #fefde8; border-color: #f0c040; }
+    .ai-score-box.low { background: var(--green-pale); border-color: var(--green); }
+    .ai-score-num { font-size: 28px; font-weight: 900; }
+    .ai-score-label { font-size: 13px; font-weight: 800; margin-bottom: 4px; }
+    .ai-score-summary { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    .story p { font-size: 13px; color: var(--muted); line-height: 1.8; margin-bottom: 12px; }
+    .story p:last-child { margin-bottom: 0; }
+
+    /* sidebar */
+    .donate-card { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
+    .donate-top { background: var(--green-dark); padding: 18px 20px; }
+    .donate-top .d-lbl { font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 3px; }
+    .donate-top .d-amount { font-size: 26px; font-weight: 900; color: white; }
+    .donate-top .d-goal { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+    .donate-top .d-bar { height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin-top: 10px; }
+    .donate-top .d-fill { height: 100%; background: #7dd98a; border-radius: 2px; }
+
+    .donate-body { padding: 18px 20px; }
+    .amount-btns { display: flex; gap: 8px; margin-bottom: 10px; }
+    .amt { flex: 1; padding: 9px 4px; border: 1.5px solid var(--border); border-radius: 7px; background: var(--bg); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); cursor: pointer; text-align: center; transition: all 0.2s; }
+    .amt:hover, .amt.picked { border-color: var(--green); background: var(--green-pale); color: var(--green); }
+    .custom-amount { width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; margin-bottom: 10px; }
+    .custom-amount:focus { border-color: var(--green); }
+    .custom-amount::placeholder { color: #bbb; }
+
+    .btn-donate { width: 100%; padding: 12px; background: var(--green); color: white; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; }
+    .btn-donate:hover { background: var(--green-light); }
+    .btn-donate:disabled { background: var(--muted); cursor: not-allowed; }
+    .secure-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+    .org-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; }
+    .org-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
+    .org-row { display: flex; align-items: center; gap: 10px; }
+    .org-icon { width: 38px; height: 38px; border-radius: 8px; background: var(--green-pale); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 15px; }
+    .org-name { font-size: 13px; font-weight: 700; }
+    .org-check { font-size: 11px; color: var(--green); font-weight: 600; margin-top: 2px; }
+
+    .share-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+    .share-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
+    .share-btns { display: flex; gap: 8px; }
+    .share-btn { flex: 1; padding: 9px; border: 1.5px solid var(--border); border-radius: 7px; background: var(--bg); cursor: pointer; text-align: center; font-size: 14px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+    .share-btn:hover { border-color: var(--green); background: var(--green-pale); }
+
+    .loading { text-align: center; padding: 60px; color: var(--muted); }
+
+    @media (max-width: 768px) {
+      .page { grid-template-columns: 1fr; }
+      .camp-hero { height: 220px; }
+      .hero-emoji { display: none; }
+      .hero-content { padding: 24px 20px; }
+      nav { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="home.html">
+      <i class="fa-solid fa-paw"></i>
+      <i class="fa-solid fa-heart orange"></i>
+      <span>Revobin</span>
+    </a>
+    <div class="nav-btns">
+      <a href="login.html" class="btn-outline">Sign In</a>
+      <a href="signup.html" class="btn-solid">Join Now</a>
+    </div>
+  </nav>
+
+  <!-- Hero — filled dynamically -->
+  <div class="camp-hero">
+    <div class="hero-emoji" id="heroEmoji">🤝</div>
+    <div class="hero-content">
+      <div class="breadcrumb">
+        <a href="home.html">Home</a>
+        <i class="fa-solid fa-chevron-right" style="font-size:9px"></i>
+        <a href="all-campaigns.html">Campaigns</a>
+        <i class="fa-solid fa-chevron-right" style="font-size:9px"></i>
+        <span id="breadCrumbType">Loading...</span>
+      </div>
+      <div class="camp-type" id="campType">Loading...</div>
+      <h1 id="campTitle">Loading campaign...</h1>
+    </div>
+  </div>
+
+  <div class="page" id="pageContent">
+    <div style="grid-column:1/-1" class="loading">
+      <i class="fa-solid fa-spinner fa-spin"></i> Loading case details...
+    </div>
+  </div>
+
+  <script>
+    function getCaseId() {
+      return new URLSearchParams(window.location.search).get('id');
+    }
+
+    const labelColors = { critical: '#e74c3c', high: '#e8722a', medium: '#f0c040', low: '#2d7a3a' };
+
+    async function loadCase() {
+      const id = getCaseId();
+      if (!id) {
+        document.getElementById('pageContent').innerHTML = '<div class="loading" style="grid-column:1/-1">No case ID found. <a href="all-campaigns.html">Go back</a></div>';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/cases/' + id);
+        if (!res.ok) throw new Error('Not found');
+        const c = await res.json();
+
+        const score = c.CaseScore;
+        const finalScore = score?.finalScore ?? 0;
+        const label = (score?.label ?? c.urgency ?? 'low').toLowerCase();
+        const pct = c.goal_amount > 0 ? Math.round(((c.current_amount || 0) / c.goal_amount) * 100) : 0;
+        const emoji = c.category === 'animal' ? '🐾' : '🤝';
+
+        // update hero
+        document.getElementById('heroEmoji').textContent = emoji;
+        document.getElementById('campTitle').textContent = c.title;
+        document.getElementById('campType').textContent = (c.category === 'animal' ? '🐾 Animal Rescue' : '🤝 Human Support');
+        document.getElementById('breadCrumbType').textContent = c.category === 'animal' ? 'Animal Rescue' : 'Human Support';
+        document.title = c.title + ' - Revobin';
+
+        document.getElementById('pageContent').innerHTML = `
+          <div>
+            <!-- progress -->
+            <div class="card">
+              <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+              <div class="progress-nums">
+                <span class="raised">JD ${c.current_amount || 0} raised</span>
+                <span class="goal">of JD ${c.goal_amount}</span>
+              </div>
+              <div class="three-stats">
+                <div class="mini-stat"><div class="val">${pct}%</div><div class="lbl">Funded</div></div>
+                <div class="mini-stat"><div class="val">${c.family_size || '—'}</div><div class="lbl">Family Size</div></div>
+                <div class="mini-stat"><div class="val">${c.location || 'Jordan'}</div><div class="lbl">Location</div></div>
+              </div>
+            </div>
+
+            <!-- AI score -->
+            ${score ? `
+              <div class="ai-score-box ${label}">
+                <div class="ai-score-label"><i class="fa-solid fa-robot"></i> AI Priority Assessment</div>
+                <div class="ai-score-num" style="color:${labelColors[label]}">${finalScore}/100</div>
+                <div class="ai-score-summary">${score.summary || ''}</div>
+              </div>
+            ` : ''}
+
+            <!-- story -->
+            <div class="card">
+              <h2><i class="fa-solid fa-book-open"></i> About This Case</h2>
+              <div class="story">
+                <p>${c.description || 'No description available.'}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SIDEBAR -->
+          <div>
+            <div class="donate-card">
+              <div class="donate-top">
+                <div class="d-lbl">Total Raised</div>
+                <div class="d-amount">JD ${c.current_amount || 0}</div>
+                <div class="d-goal">Goal: JD ${c.goal_amount}</div>
+                <div class="d-bar"><div class="d-fill" style="width:${pct}%"></div></div>
+              </div>
+              <div class="donate-body">
+                <div class="amount-btns">
+                  <button class="amt" onclick="pickAmt(this)">JD 10</button>
+                  <button class="amt picked" onclick="pickAmt(this)">JD 25</button>
+                  <button class="amt" onclick="pickAmt(this)">JD 50</button>
+                </div>
+                <input class="custom-amount" id="customAmt" type="number" placeholder="Or enter amount (JD)" />
+                <button class="btn-donate" id="donateBtn" onclick="donate(${c.id})">
+                  <i class="fa-solid fa-heart"></i> Donate Now
+                </button>
+                <div class="secure-note">100% goes directly to this case</div>
+              </div>
+            </div>
+
+            <div class="org-card">
+              <div class="org-label">ORGANIZER</div>
+              <div class="org-row">
+                <div class="org-icon"><i class="fa-solid fa-building-ngo"></i></div>
+                <div>
+                  <div class="org-name">Community Support Team</div>
+                  <div class="org-check"><i class="fa-solid fa-circle-check"></i> Verified</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="share-card">
+              <div class="share-label">SHARE THIS CASE</div>
+              <div class="share-btns">
+                <a href="#" class="share-btn"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i></a>
+                <a href="#" class="share-btn"><i class="fa-brands fa-facebook" style="color:#1877f2"></i></a>
+                <a href="#" class="share-btn"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" class="share-btn" onclick="copyLink()"><i class="fa-solid fa-link" style="color:var(--muted)"></i></a>
+              </div>
+            </div>
+          </div>
+        `;
+
+      } catch (err) {
+        document.getElementById('pageContent').innerHTML = `
+          <div class="loading" style="grid-column:1/-1">
+            Could not load case. <a href="all-campaigns.html">Go back to campaigns</a>
+          </div>`;
+      }
+    }
+
+    function pickAmt(btn) {
+      document.querySelectorAll('.amt').forEach(b => b.classList.remove('picked'));
+      btn.classList.add('picked');
+      document.getElementById('customAmt').value = '';
+    }
+
+    async function donate(caseId) {
+      const token = localStorage.getItem('token');
+      if (!token) { alert('Please login to donate.'); window.location.href = 'login.html'; return; }
+
+      const picked = document.querySelector('.amt.picked');
+      const custom = document.getElementById('customAmt').value;
+      const amount = custom ? parseFloat(custom) : (picked ? parseFloat(picked.textContent.replace('JD ', '')) : null);
+
+      if (!amount || amount <= 0) { alert('Please select or enter a valid amount.'); return; }
+
+      const btn = document.getElementById('donateBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+
+      try {
+        const res = await fetch('/api/donations', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': token },
+          body: JSON.stringify({ case_id: caseId, amount })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          alert('Thank you for your donation of JD ' + amount + '! 🎉');
+          loadCase();
+        } else {
+          alert(data.message || 'Donation failed.');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-heart"></i> Donate Now';
+        }
+      } catch (err) {
+        alert('Could not connect to server.');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-heart"></i> Donate Now';
+      }
+    }
+
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Link copied!');
+    }
+
+    loadCase();
+  </script>
+
+</body>
+</html>

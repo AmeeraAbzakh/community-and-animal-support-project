@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Campaign - Revobin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    :root {
+      --green: #2d7a3a; --green-light: #3d9e4e; --green-pale: #eaf4ec;
+      --orange: #e8722a; --orange-pale: #fdf1ea;
+      --text: #1a2e1a; --muted: #6b7f6b; --border: #dde5d8; --bg: #f4f6f3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); padding: 84px 24px 60px; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.95); border-bottom: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo i { color: var(--green); font-size: 16px; }
+    .logo i.orange { color: var(--orange); }
+    .logo span { font-size: 13px; font-weight: 800; color: var(--text); }
+    .btn-back { padding: 7px 16px; border: 1.5px solid var(--border); border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--muted); background: transparent; text-decoration: none; transition: all 0.2s; }
+    .btn-back:hover { border-color: var(--green); color: var(--green); }
+
+    .page { max-width: 680px; margin: 0 auto; }
+    .page-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .page-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+    .ai-notice { background: var(--green-pale); border: 1px solid #c0dfc5; border-radius: 10px; padding: 14px 16px; font-size: 12px; color: var(--muted); display: flex; align-items: flex-start; gap: 10px; margin-bottom: 20px; }
+    .ai-notice i { color: var(--green); margin-top: 1px; flex-shrink: 0; }
+
+    .result-box { display: none; border-radius: 12px; padding: 20px 22px; margin-bottom: 20px; border: 2px solid; }
+    .result-box.critical { background: #fde8e8; border-color: #e74c3c; }
+    .result-box.high { background: var(--orange-pale); border-color: var(--orange); }
+    .result-box.medium { background: #fefde8; border-color: #f0c040; }
+    .result-box.low { background: var(--green-pale); border-color: var(--green); }
+    .result-score { font-size: 32px; font-weight: 900; margin-bottom: 4px; }
+    .result-label { font-size: 14px; font-weight: 800; margin-bottom: 6px; }
+    .result-summary { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+    .card-title { font-size: 13px; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .card-title i { color: var(--green); }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .field input, .field select, .field textarea { width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; appearance: none; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--green); }
+    .field textarea { min-height: 100px; resize: vertical; line-height: 1.6; }
+    .field input::placeholder, .field textarea::placeholder { color: #bbb; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .btn-submit { width: 100%; padding: 14px; background: var(--green); color: white; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
+    .btn-submit:hover { background: var(--green-light); }
+    .btn-submit:disabled { background: var(--muted); cursor: not-allowed; }
+
+    .error-msg { color: #e74c3c; font-size: 12px; text-align: center; margin-top: 10px; display: none; }
+
+    @media (max-width: 560px) { .row { grid-template-columns: 1fr; } body { padding: 76px 14px 40px; } nav { padding: 0 16px; } }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="logo" href="home.html">
+      <i class="fa-solid fa-paw"></i>
+      <i class="fa-solid fa-heart orange"></i>
+      <span>Revobin</span>
+    </a>
+    <a href="all-campaigns.html" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back</a>
+  </nav>
+
+  <div class="page">
+    <div class="page-title">Create a Campaign</div>
+    <p class="page-sub">Submit a new case — our Gemini AI will automatically assess its priority score.</p>
+
+    <div class="ai-notice">
+      <i class="fa-solid fa-robot"></i>
+      <span>Our AI reads your case description and assigns a priority score from 0 to 100. Higher scores appear first in the public campaigns list.</span>
+    </div>
+
+    <div class="result-box" id="resultBox">
+      <div class="result-label" id="resultLabel"></div>
+      <div class="result-score" id="resultScore"></div>
+      <div class="result-summary" id="resultSummary"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-bullhorn"></i> Case Information</div>
+      <div class="field">
+        <label>Title *</label>
+        <input type="text" id="title" placeholder="e.g. Help a family of 5 in Zarqa" />
+      </div>
+      <div class="field">
+        <label>Description * — AI will analyze this text</label>
+        <textarea id="description" placeholder="Describe the situation in full detail. Include health conditions, family size, financial situation, and urgency. The more detail, the more accurate the AI score."></textarea>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Category *</label>
+          <select id="category">
+            <option value="">Select category</option>
+            <option value="human">Human Support</option>
+            <option value="animal">Animal Rescue</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Urgency Level</label>
+          <select id="urgency">
+            <option value="medium">Medium</option>
+            <option value="critical">Critical</option>
+            <option value="high">High</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Goal Amount (JD) *</label>
+          <input type="number" id="goal_amount" placeholder="e.g. 2000" />
+        </div>
+        <div class="field">
+          <label>Location</label>
+          <input type="text" id="location" placeholder="e.g. Amman, Zarqa, Irbid" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-robot"></i> AI Assessment Data</div>
+      <div class="row">
+        <div class="field">
+          <label>Income Level</label>
+          <select id="income_level">
+            <option value="very_low">Very Low (under JD 200)</option>
+            <option value="low">Low (JD 200–400)</option>
+            <option value="medium">Medium (JD 400+)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Health Condition</label>
+          <select id="health_condition">
+            <option value="critical">Critical / Life-threatening</option>
+            <option value="serious">Serious</option>
+            <option value="moderate">Moderate</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Family Size</label>
+        <input type="number" id="family_size" placeholder="Number of people" value="1" />
+      </div>
+    </div>
+
+    <p class="error-msg" id="errorMsg"></p>
+
+    <button class="btn-submit" id="submitBtn" onclick="submitCase()">
+      <i class="fa-solid fa-robot"></i> Submit & Get AI Score
+    </button>
+  </div>
+
+  <script>
+    const token = localStorage.getItem('token');
+    if (!token) { alert('Please login first.'); window.location.href = 'login.html'; }
+
+    async function submitCase() {
+      const btn = document.getElementById('submitBtn');
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.style.display = 'none';
+
+      const data = {
+        title: document.getElementById('title').value.trim(),
+        description: document.getElementById('description').value.trim(),
+        category: document.getElementById('category').value,
+        urgency: document.getElementById('urgency').value,
+        goal_amount: parseFloat(document.getElementById('goal_amount').value),
+        income_level: document.getElementById('income_level').value,
+        health_condition: document.getElementById('health_condition').value,
+        family_size: parseInt(document.getElementById('family_size').value) || 1,
+        location: document.getElementById('location').value.trim()
+      };
+
+      if (!data.title || !data.description || !data.category || !data.goal_amount) {
+        errorMsg.textContent = 'Please fill in all required fields (marked with *).';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AI is analyzing your case...';
+
+      try {
+        const res = await fetch('/api/cases', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': token },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          const box = document.getElementById('resultBox');
+          const label = result.priority.label.toLowerCase();
+          box.className = 'result-box ' + label;
+          box.style.display = 'block';
+          document.getElementById('resultLabel').textContent = result.priority.label + ' Priority';
+          document.getElementById('resultScore').textContent = result.priority.score + '/100';
+          document.getElementById('resultSummary').textContent = result.priority.summary;
+          box.scrollIntoView({ behavior: 'smooth' });
+          btn.innerHTML = '✅ Campaign Created Successfully';
+          btn.style.background = '#27ae60';
+        } else {
+          errorMsg.textContent = result.message || 'Something went wrong.';
+          errorMsg.style.display = 'block';
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-robot"></i> Submit & Get AI Score';
+        }
+
+      } catch (err) {
+        errorMsg.textContent = 'Could not connect to server.';
+        errorMsg.style.display = 'block';
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-robot"></i> Submit & Get AI Score';
+      }
+    }
+  </script>
+</body>
+</html>
