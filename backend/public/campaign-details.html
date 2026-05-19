@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Campaign Details - Revobin</title>
+  <title>Campaign Details - Community & Animal Support</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
   <style>
@@ -117,7 +117,7 @@
     <a class="logo" href="home.html">
       <i class="fa-solid fa-paw"></i>
       <i class="fa-solid fa-heart orange"></i>
-      <span>Revobin</span>
+      <span>Community & Animal Support</span>
     </a>
     <div class="nav-btns">
       <a href="login.html" class="btn-outline">Sign In</a>
@@ -177,7 +177,7 @@
         document.getElementById('campTitle').textContent = c.title;
         document.getElementById('campType').textContent = (c.category === 'animal' ? '🐾 Animal Rescue' : '🤝 Human Support');
         document.getElementById('breadCrumbType').textContent = c.category === 'animal' ? 'Animal Rescue' : 'Human Support';
-        document.title = c.title + ' - Revobin';
+        document.title = c.title + ' - Community & Animal Support';
 
         document.getElementById('pageContent').innerHTML = `
           <div>

@@ -1,35 +1,93 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-// استخدام gemini-1.5-flash هو الصحيح، والخطأ 404 غالباً بسبب تحديثات جوجل أو المكتبة
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+// موديل Gemini
+const model = genAI.getGenerativeModel({
+  model: 'gemini-1.5-flash'
+});
 
 async function analyzeCase(description) {
   try {
-    // محاولة الاتصال بالذكاء الاصطناعي
-    const prompt = `Analyze: "${description}". Return JSON: {"urgency":5,"financialGap":5,"vulnerability":5,"medicalSeverity":5,"socialIsolation":5,"animalWelfare":5,"sustainability":5,"summary":"وصف"}`;
-    
+
+    // Prompt
+    const prompt = `
+    Analyze this case:
+
+    "${description}"
+
+    Return ONLY valid JSON in this format:
+    {
+      "urgency": 5,
+      "financialGap": 5,
+      "vulnerability": 5,
+      "medicalSeverity": 5,
+      "socialIsolation": 5,
+      "animalWelfare": 5,
+      "sustainability": 5,
+      "summary": "وصف مختصر"
+    }
+    `;
+
+    // إرسال الطلب
     const result = await model.generateContent(prompt);
+
     const response = await result.response;
     const text = response.text();
-    const aiScores = JSON.parse(text.replace(/```json|```/g, '').trim());
 
-    // حساب السكور (عملية حسابية بسيطة)
-    const finalScore = Math.round((aiScores.urgency || 5) * 10); 
+    // تحويل الرد إلى JSON
+    const aiScores = JSON.parse(
+      text.replace(/```json|```/g, '').trim()
+    );
 
-    return { 
-      finalScore: finalScore, 
-      label: finalScore > 70 ? 'High' : 'Medium', 
-      summary: aiScores.summary || 'تم التحليل' 
+    // السكورات
+    const scores = [
+      aiScores.urgency || 5,
+      aiScores.financialGap || 5,
+      aiScores.vulnerability || 5,
+      aiScores.medicalSeverity || 5,
+      aiScores.socialIsolation || 5,
+      aiScores.animalWelfare || 5,
+      aiScores.sustainability || 5
+    ];
+
+    // المتوسط
+    const average =
+      scores.reduce((sum, value) => sum + value, 0) / scores.length;
+
+    // النهائي من 100
+    const finalScore = Math.round(average * 10);
+
+    // التصنيف
+    let label = 'Low';
+
+    if (finalScore >= 80) {
+      label = 'High';
+    } else if (finalScore >= 60) {
+      label = 'Medium';
+    }
+
+    // النتيجة النهائية
+    return {
+      aiScores,
+      finalScore,
+      label,
+      summary: aiScores.summary
     };
 
   } catch (err) {
-    console.error("Gemini AI Error caught in service:", err.message);
-    // القيمة المنقذة: إذا فشل الـ AI بنرجع قيم ثابتة عشان الداتابيز ما ترفض
-    return { 
-      finalScore: 50, 
-      label: 'Medium', 
-      summary: 'تحليل افتراضي بسبب خطأ في السيرفر' 
+
+    console.error(
+      'Gemini AI Error caught in service:',
+      err.message
+    );
+
+    // fallback
+    return {
+      aiScores: {},
+      finalScore: 50,
+      label: 'Medium',
+      summary: 'تحليل افتراضي بسبب خطأ في السيرفر'
     };
   }
 }

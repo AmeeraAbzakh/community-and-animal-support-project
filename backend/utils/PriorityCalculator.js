@@ -1,23 +1,39 @@
 class PriorityCalculator {
-  static calculate({ health_condition, income_level, family_size, urgency, category }) {
-    let score = 0;
 
-    const healthScores = { critical: 50, serious: 35, moderate: 20 };
-    score += healthScores[health_condition] || 0;
+  static weights = {
+    urgency: 30,
+    financialGap: 20,
+    vulnerability: 20,
+    medicalSeverity: 15,
+    socialIsolation: 8,
+    animalWelfare: 4,
+    sustainability: 3
+  };
 
-    const incomeScores = { very_low: 30, low: 20, medium: 10 };
-    score += incomeScores[income_level] || 0;
+  static calculate(aiScores) {
 
-    if (family_size > 5) score += 20;
-    else if (family_size >= 3) score += 10;
-    else score += 5;
+    if (!aiScores) return 50;
 
-    const urgencyScores = { critical: 25, high: 15, medium: 8, low: 3 };
-    score += urgencyScores[urgency] || 0;
+    let total = 0;
 
-    if (category === 'animal') score += 10;
+    total += (aiScores.urgency / 10) * this.weights.urgency;
+    total += (aiScores.financialGap / 10) * this.weights.financialGap;
+    total += (aiScores.vulnerability / 10) * this.weights.vulnerability;
+    total += (aiScores.medicalSeverity / 10) * this.weights.medicalSeverity;
+    total += (aiScores.socialIsolation / 10) * this.weights.socialIsolation;
+    total += (aiScores.animalWelfare / 10) * this.weights.animalWelfare;
+    total += (aiScores.sustainability / 10) * this.weights.sustainability;
 
-    return score;
+    return Math.round(total);
+  }
+
+  static getLabel(score) {
+
+    if (score >= 80) return 'Critical';
+    if (score >= 60) return 'High';
+    if (score >= 40) return 'Medium';
+
+    return 'Low';
   }
 }
 
