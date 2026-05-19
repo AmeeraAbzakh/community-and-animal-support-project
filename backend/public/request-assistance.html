@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Assistance - Revobin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    :root {
+      --orange: #e8722a; --orange-light: #f08040; --orange-pale: #fdf1ea;
+      --green: #2d7a3a; --green-pale: #eaf4ec;
+      --text: #1a2e1a; --muted: #6b7f6b; --border: #dde5d8; --bg: #f4f6f3;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); padding: 84px 24px 60px; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.95); border-bottom: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .logo i { color: var(--green); font-size: 16px; }
+    .logo i.orange { color: var(--orange); }
+    .logo span { font-size: 13px; font-weight: 800; color: var(--text); }
+    .nav-right { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--muted); }
+    .logout-btn { cursor: pointer; color: var(--orange); font-weight: 700; background: none; border: none; font-family: 'Montserrat', sans-serif; font-size: 12px; }
+
+    .page { max-width: 660px; margin: 0 auto; }
+
+    .welcome-box { background: var(--orange-pale); border: 1px solid #f0c8a0; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 14px; }
+    .welcome-box i { color: var(--orange); font-size: 20px; margin-top: 2px; flex-shrink: 0; }
+    .welcome-box h2 { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .welcome-box p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    .result-box { display: none; border-radius: 12px; padding: 20px 22px; margin-bottom: 20px; border: 2px solid; }
+    .result-box.critical { background: #fde8e8; border-color: #e74c3c; }
+    .result-box.high { background: var(--orange-pale); border-color: var(--orange); }
+    .result-box.medium { background: #fefde8; border-color: #f0c040; }
+    .result-box.low { background: var(--green-pale); border-color: var(--green); }
+    .result-score { font-size: 32px; font-weight: 900; margin-bottom: 4px; }
+    .result-label { font-size: 14px; font-weight: 800; margin-bottom: 6px; }
+    .result-summary { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .result-pending { margin-top: 12px; background: rgba(0,0,0,0.06); border-radius: 8px; padding: 10px 14px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+
+    .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+    .card-title { font-size: 13px; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .card-title i { color: var(--orange); }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .field input, .field select, .field textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      background: var(--bg);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--orange);
+    }
+
+    .field textarea {
+      min-height: 110px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: #bbb;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--orange);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-submit:hover {
+      background: var(--orange-light);
+    }
+
+    .btn-submit:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+    }
+
+    .error-msg {
+      color: #e74c3c;
+      font-size: 12px;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
+    }
+
+    @media (max-width: 560px) {
+      .row { grid-template-columns: 1fr; }
+      body { padding: 76px 14px 40px; }
+      nav { padding: 0 16px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a class="logo" href="home.html">
+      <i class="fa-solid fa-paw"></i>
+      <i class="fa-solid fa-heart orange"></i>
+      <span>Revobin</span>
+    </a>
+
+    <div class="nav-right">
+      <span id="navUserName">Welcome</span>
+
+      <button class="logout-btn" onclick="logout()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <div class="page">
+
+    <div class="welcome-box">
+      <i class="fa-solid fa-hand-holding-heart"></i>
+
+      <div>
+        <h2>Hello, <span id="userName">Friend</span> 👋</h2>
+
+        <p>
+          Use this form to submit your support request.
+          Our AI will analyze your case and assign a priority score.
+          An admin will review and approve your request before it appears publicly.
+        </p>
+      </div>
+    </div>
+
+    <div class="result-box" id="resultBox">
+
+      <div class="result-label" id="resultLabel"></div>
+
+      <div class="result-score" id="resultScore"></div>
+
+      <div class="result-summary" id="resultSummary"></div>
+
+      <div class="result-pending">
+        <i class="fa-solid fa-clock"></i>
+
+        Your request has been submitted and is pending admin review.
+        You will be notified once approved.
+      </div>
+    </div>
+
+    <div class="card">
+
+      <div class="card-title">
+        <i class="fa-solid fa-file-alt"></i>
+        Your Support Request
+      </div>
+
+      <div class="field">
+        <label>Title *</label>
+
+        <input
+          type="text"
+          id="title"
+          placeholder="Brief title describing your situation"
+        />
+      </div>
+
+      <div class="field">
+        <label>Description *</label>
+
+        <textarea
+          id="description"
+          placeholder="Explain your situation clearly..."
+        ></textarea>
+      </div>
+
+      <div class="row">
+
+        <div class="field">
+          <label>Type of Support</label>
+
+          <select id="category">
+            <option value="human">Human / Personal Support</option>
+            <option value="animal">Animal Rescue</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Requested Amount (JD) *</label>
+
+          <input
+            type="number"
+            id="goal_amount"
+            placeholder="e.g. 1500"
+          />
+        </div>
+
+      </div>
+
+      <div class="field">
+        <label>Your Location</label>
+
+        <input
+          type="text"
+          id="location"
+          placeholder="e.g. Amman, Zarqa, Irbid"
+        />
+      </div>
+
+    </div>
+
+    <p class="error-msg" id="errorMsg"></p>
+
+    <button
+      class="btn-submit"
+      id="submitBtn"
+      onclick="submitRequest()"
+    >
+      <i class="fa-solid fa-paper-plane"></i>
+      Submit Request
+    </button>
+
+  </div>
+
+  <script>
+
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('userRole');
+    const name = localStorage.getItem('userName');
+
+    if (!token || role !== 'person_in_need') {
+      window.location.href = 'login.html';
+    }
+
+    if (name) {
+      document.getElementById('userName').textContent = name;
+      document.getElementById('navUserName').textContent = name;
+    }
+
+    async function submitRequest() {
+
+      const btn = document.getElementById('submitBtn');
+      const errorMsg = document.getElementById('errorMsg');
+
+      errorMsg.style.display = 'none';
+
+      const data = {
+
+        title:
+          document.getElementById('title').value.trim(),
+
+        description:
+          document.getElementById('description').value.trim(),
+
+        category:
+          document.getElementById('category').value,
+
+        goal_amount:
+          parseFloat(document.getElementById('goal_amount').value),
+
+        location:
+          document.getElementById('location').value.trim(),
+
+        urgency: 'medium',
+        income_level: 'very_low',
+        health_condition: 'moderate',
+        family_size: 1
+      };
+
+      if (!data.title || !data.description || !data.goal_amount) {
+
+        errorMsg.textContent =
+          'Please fill in all required fields.';
+
+        errorMsg.style.display = 'block';
+
+        return;
+      }
+
+      btn.disabled = true;
+
+      btn.innerHTML =
+        '<i class="fa-solid fa-spinner fa-spin"></i> Submitting and analyzing...';
+
+      try {
+
+        const res = await fetch('/api/cases/request', {
+
+          method: 'POST',
+
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          },
+
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+
+          const box =
+            document.getElementById('resultBox');
+
+          const label =
+            result.priority.label.toLowerCase();
+
+          box.className =
+            'result-box ' + label;
+
+          box.style.display = 'block';
+
+          document.getElementById('resultLabel').textContent =
+            result.priority.label + ' Priority';
+
+          document.getElementById('resultScore').textContent =
+            result.priority.score + '/100';
+
+          document.getElementById('resultSummary').textContent =
+            result.priority.summary;
+
+          box.scrollIntoView({
+            behavior: 'smooth'
+          });
+
+          btn.innerHTML =
+            '✅ Request Submitted Successfully';
+
+          btn.style.background = '#27ae60';
+
+        } else {
+
+          errorMsg.textContent =
+            result.message || 'Submission failed.';
+
+          errorMsg.style.display = 'block';
+
+          btn.disabled = false;
+
+          btn.innerHTML =
+            '<i class="fa-solid fa-paper-plane"></i> Submit Request';
+        }
+
+      } catch (err) {
+
+        errorMsg.textContent =
+          'Could not connect to server.';
+
+        errorMsg.style.display = 'block';
+
+        btn.disabled = false;
+
+        btn.innerHTML =
+          '<i class="fa-solid fa-paper-plane"></i> Submit Request';
+      }
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = 'login.html';
+    }
+
+  </script>
+
+</body>
+</html>

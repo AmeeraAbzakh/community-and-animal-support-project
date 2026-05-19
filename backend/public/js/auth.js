@@ -1,5 +1,3 @@
-// handles both login and signup pages
-
 async function handleLogin() {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
@@ -9,7 +7,8 @@ async function handleLogin() {
   errorMsg.style.display = 'none';
 
   if (!email || !password) {
-    showError('Please fill in all fields.');
+    errorMsg.textContent = 'Please fill in all fields.';
+    errorMsg.style.display = 'block';
     return;
   }
 
@@ -30,21 +29,24 @@ async function handleLogin() {
       localStorage.setItem('userName', data.name);
       localStorage.setItem('userRole', data.role);
 
-      if (data.role === 'admin') {
+      // redirect حسب الـ role
+      if (data.role === 'admin' || data.role === 'organization') {
         window.location.href = 'admin-dashboard.html';
-      } else if (data.role === 'organization') {
-        window.location.href = 'dashboard.html';
+      } else if (data.role === 'person_in_need') {
+        window.location.href = 'request-assistance.html';
       } else {
         window.location.href = 'all-campaigns.html';
       }
     } else {
-      showError(data.message || 'Login failed.');
+      errorMsg.textContent = data.message || 'Login failed.';
+      errorMsg.style.display = 'block';
       btn.disabled = false;
       btn.textContent = 'Sign In';
     }
 
   } catch (err) {
-    showError('Could not connect to server.');
+    errorMsg.textContent = 'Could not connect to server.';
+    errorMsg.style.display = 'block';
     btn.disabled = false;
     btn.textContent = 'Sign In';
   }
@@ -59,23 +61,29 @@ async function handleRegister() {
   const pw2 = document.getElementById('pw2')?.value || password;
   const role = document.getElementById('role')?.value || 'user';
   const terms = document.getElementById('terms')?.checked ?? true;
+  const errorMsg = document.getElementById('errorMsg');
+  const btn = document.getElementById('submitBtn');
+
+  errorMsg.style.display = 'none';
 
   if (!firstName || !email || !password) {
-    showError('Please fill in all required fields.');
+    errorMsg.textContent = 'Please fill in all required fields.';
+    errorMsg.style.display = 'block';
     return;
   }
 
   if (password !== pw2) {
-    showError('Passwords do not match.');
+    errorMsg.textContent = 'Passwords do not match.';
+    errorMsg.style.display = 'block';
     return;
   }
 
   if (!terms) {
-    showError('Please agree to the Terms of Service.');
+    errorMsg.textContent = 'Please agree to the Terms of Service.';
+    errorMsg.style.display = 'block';
     return;
   }
 
-  const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Creating account...';
 
@@ -92,27 +100,23 @@ async function handleRegister() {
     const data = await res.json();
 
     if (res.ok) {
-      alert('Account created! Please login.');
+      alert('Account created successfully! Please login.');
       window.location.href = 'login.html';
     } else {
-      showError(data.message || 'Registration failed.');
+      errorMsg.textContent = data.message || 'Registration failed.';
+      errorMsg.style.display = 'block';
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-arrow-right"></i> Create Account';
     }
 
   } catch (err) {
-    showError('Could not connect to server.');
+    errorMsg.textContent = 'Could not connect to server.';
+    errorMsg.style.display = 'block';
     btn.disabled = false;
     btn.innerHTML = '<i class="fa-solid fa-arrow-right"></i> Create Account';
   }
 }
 
-function showError(msg) {
-  const el = document.getElementById('errorMsg');
-  if (el) { el.textContent = msg; el.style.display = 'block'; }
-}
-
-// run on Enter key
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
     const loginBtn = document.getElementById('loginBtn');

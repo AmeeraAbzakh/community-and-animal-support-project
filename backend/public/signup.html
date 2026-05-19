@@ -15,74 +15,53 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Montserrat', sans-serif; background: var(--bg); min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 40px 20px; }
-    main { width: 100%; max-width: 580px; }
-
+    main { width: 100%; max-width: 600px; }
     .back { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: none; margin-bottom: 24px; transition: color 0.2s; }
     .back:hover { color: var(--green); }
-
     .card { background: white; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
     .card-header { background: var(--green-pale); border-bottom: 1px solid var(--border); padding: 24px 32px; display: flex; align-items: center; gap: 14px; }
     .header-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
     .card-header h1 { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 2px; }
     .card-header p { font-size: 12px; color: var(--muted); }
     .card-body { padding: 32px; }
-
+    .role-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: block; }
+    .role-toggle { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+    .role-btn { padding: 12px 8px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--bg); cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 6px; transition: all 0.2s; text-align: center; }
+    .role-btn i { font-size: 18px; }
+    .role-btn.selected.green { border-color: var(--green); background: var(--green-pale); color: var(--green); }
+    .role-btn.selected.blue { border-color: var(--blue); background: var(--blue-pale); color: var(--blue); }
+    .role-btn.selected.orange { border-color: var(--orange); background: var(--orange-pale); color: var(--orange); }
+    .role-btn:hover { transform: translateY(-2px); }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
     .row.full { grid-template-columns: 1fr; }
     .field { display: flex; flex-direction: column; gap: 6px; }
     .field label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-
     .input-box { position: relative; }
     .input-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #aaa; font-size: 13px; pointer-events: none; }
-    .input-box input, .input-box select {
-      width: 100%; padding: 11px 14px 11px 36px;
-      border: 1.5px solid var(--border); border-radius: 8px;
-      font-family: 'Montserrat', sans-serif; font-size: 13px;
-      color: var(--text); background: var(--bg); outline: none;
-      transition: border-color 0.2s; appearance: none;
-    }
-    .input-box input:focus, .input-box select:focus { border-color: var(--green); }
+    .input-box input { width: 100%; padding: 11px 14px 11px 36px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
+    .input-box input:focus { border-color: var(--green); }
     .input-box input::placeholder { color: #bbb; }
-
-    /* role toggle */
-    .role-toggle { display: flex; gap: 10px; margin-bottom: 14px; }
-    .role-btn {
-      flex: 1; padding: 12px; border: 1.5px solid var(--border);
-      border-radius: 10px; background: var(--bg); cursor: pointer;
-      font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
-      color: var(--muted); display: flex; align-items: center; justify-content: center;
-      gap: 8px; transition: all 0.2s;
-    }
-    .role-btn.selected { border-color: var(--green); background: var(--green-pale); color: var(--green); }
-    .role-btn:hover { border-color: var(--green); color: var(--green); }
-
     .divider { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin: 24px 0 16px; display: flex; align-items: center; gap: 10px; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
     .strength-bar { display: flex; gap: 4px; margin-top: 5px; }
     .strength-bar span { flex: 1; height: 3px; border-radius: 2px; background: var(--border); transition: background 0.3s; }
-
     .terms { display: flex; align-items: flex-start; gap: 10px; margin-top: 20px; font-size: 12px; color: var(--muted); line-height: 1.6; cursor: pointer; }
     .terms input[type="checkbox"] { appearance: none; -webkit-appearance: none; width: 16px; height: 16px; min-width: 16px; border: 1.5px solid var(--border); border-radius: 4px; background: var(--bg); cursor: pointer; position: relative; margin-top: 1px; transition: all 0.2s; }
     .terms input:checked { background: var(--green); border-color: var(--green); }
     .terms input:checked::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 8px; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
     .terms a { color: var(--green); font-weight: 600; text-decoration: none; }
-
     .btn-submit { width: 100%; margin-top: 16px; padding: 13px; background: var(--green); color: white; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
     .btn-submit:hover { background: var(--green-light); }
     .btn-submit:disabled { background: var(--muted); cursor: not-allowed; }
-
     .error-msg { color: #e74c3c; font-size: 12px; text-align: center; margin-top: 10px; display: none; }
     .login-link { text-align: center; margin-top: 16px; font-size: 12px; color: var(--muted); }
     .login-link a { color: var(--green); font-weight: 600; text-decoration: none; }
-
-    @media (max-width: 560px) { .row { grid-template-columns: 1fr; } .card-body { padding: 20px; } .card-header { padding: 20px; } }
+    @media (max-width: 560px) { .row { grid-template-columns: 1fr; } .card-body { padding: 20px; } .role-toggle { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 <main>
   <a class="back" href="home.html"><i class="fa-solid fa-arrow-left"></i> Back to home</a>
-
   <div class="card">
     <div class="card-header">
       <div class="header-icon"><i class="fa-solid fa-user-plus"></i></div>
@@ -91,18 +70,20 @@
         <p>Join Revobin and start making a difference.</p>
       </div>
     </div>
-
     <div class="card-body">
-      <!-- Role Selection -->
-      <div class="field" style="margin-bottom:14px">
-        <label>I am joining as a</label>
-      </div>
+      <span class="role-label">I am joining as a</span>
       <div class="role-toggle">
-        <button class="role-btn selected" onclick="selectRole('user', this)">
-          <i class="fa-solid fa-user"></i> Supporter / Donor
+        <button class="role-btn selected green" onclick="selectRole('user', this, 'green')">
+          <i class="fa-solid fa-heart"></i>
+          Supporter / Donor
         </button>
-        <button class="role-btn" onclick="selectRole('organization', this)">
-          <i class="fa-solid fa-building-ngo"></i> Organization
+        <button class="role-btn" onclick="selectRole('organization', this, 'blue')">
+          <i class="fa-solid fa-building-ngo"></i>
+          Organization
+        </button>
+        <button class="role-btn" onclick="selectRole('person_in_need', this, 'orange')">
+          <i class="fa-solid fa-hand-holding-heart"></i>
+          Person in Need
         </button>
       </div>
       <input type="hidden" id="role" value="user" />
@@ -123,7 +104,6 @@
           </div>
         </div>
       </div>
-
       <div class="row full">
         <div class="field">
           <label>Email Address</label>
@@ -133,7 +113,6 @@
           </div>
         </div>
       </div>
-
       <div class="row full">
         <div class="field">
           <label>Phone Number</label>
@@ -143,9 +122,7 @@
           </div>
         </div>
       </div>
-
       <div class="divider">Security</div>
-
       <div class="row">
         <div class="field">
           <label>Password</label>
@@ -165,28 +142,25 @@
           </div>
         </div>
       </div>
-
       <label class="terms">
         <input type="checkbox" id="terms" />
         I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
       </label>
-
       <p class="error-msg" id="errorMsg"></p>
-
       <button class="btn-submit" id="submitBtn" onclick="handleRegister()">
         <i class="fa-solid fa-arrow-right"></i> Create Account
       </button>
-
       <p class="login-link">Already have an account? <a href="login.html">Sign in</a></p>
     </div>
   </div>
 </main>
-
 <script src="js/auth.js"></script>
 <script>
-  function selectRole(role, btn) {
-    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
+  function selectRole(role, btn, color) {
+    document.querySelectorAll('.role-btn').forEach(b => {
+      b.classList.remove('selected', 'green', 'blue', 'orange');
+    });
+    btn.classList.add('selected', color);
     document.getElementById('role').value = role;
   }
 

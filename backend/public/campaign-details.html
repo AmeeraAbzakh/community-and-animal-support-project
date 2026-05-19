@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Campaign Details - Community & Animal Support</title>
+  <title>Campaign Details - Revobin</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
   <style>
     :root {
       --green: #2d7a3a; --green-light: #3d9e4e; --green-pale: #eaf4ec; --green-dark: #1e5427;
       --orange: #e8722a; --orange-pale: #fdf1ea;
-      --blue: #1a6b8a; --blue-pale: #e8f4f9;
       --text: #1a2e1a; --muted: #6b7f6b; --border: #dde5d8; --bg: #f4f6f3;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -26,25 +25,25 @@
     .btn-outline { padding: 7px 18px; border: 1.5px solid var(--green); border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--green); background: transparent; text-decoration: none; }
     .btn-solid { padding: 7px 18px; border: none; border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: white; background: var(--green); text-decoration: none; }
 
-    .camp-hero { margin-top: 64px; height: 300px; background: var(--green-dark); position: relative; display: flex; align-items: flex-end; overflow: hidden; }
-    .camp-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 50%, rgba(255,255,255,0.05) 0%, transparent 60%); }
-    .hero-emoji { position: absolute; right: 80px; top: 50%; transform: translateY(-50%); font-size: 120px; opacity: 0.18; }
-    .hero-content { position: relative; padding: 36px 60px; width: 100%; }
-    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 14px; }
-    .breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; }
-    .breadcrumb a:hover { color: white; }
-    .camp-type { display: inline-block; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.85); letter-spacing: 1px; margin-bottom: 10px; }
-    .hero-content h1 { font-family: 'Lora', serif; font-size: 26px; font-weight: 600; color: white; line-height: 1.3; max-width: 600px; }
+    .camp-hero { margin-top: 64px; height: 280px; position: relative; display: flex; align-items: flex-end; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 100px; }
+    .hero-bg.human { background: linear-gradient(135deg, #1e5427, #2d7a3a); }
+    .hero-bg.animal { background: linear-gradient(135deg, #c05a1a, #e8722a); }
+    .hero-emoji-big { opacity: 0.2; font-size: 160px; position: absolute; right: 60px; top: 50%; transform: translateY(-50%); }
+    .hero-content { position: relative; padding: 32px 60px; width: 100%; z-index: 1; }
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 12px; color: rgba(255,255,255,0.65); margin-bottom: 12px; }
+    .breadcrumb a { color: rgba(255,255,255,0.65); text-decoration: none; }
+    .camp-type-badge { display: inline-block; background: rgba(255,255,255,0.18); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.9); margin-bottom: 10px; }
+    .hero-content h1 { font-family: 'Lora', serif; font-size: 26px; font-weight: 600; color: white; line-height: 1.3; max-width: 580px; }
 
-    .page { max-width: 960px; margin: 0 auto; padding: 40px 24px 60px; display: grid; grid-template-columns: 1fr 300px; gap: 24px; align-items: start; }
+    .page { max-width: 960px; margin: 0 auto; padding: 36px 24px 60px; display: grid; grid-template-columns: 1fr 295px; gap: 22px; align-items: start; }
 
     .card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 18px; }
-    .card h2 { font-size: 14px; font-weight: 800; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .card h2 { font-size: 14px; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
     .card h2 i { color: var(--green); }
 
-    /* progress */
     .progress-bar { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 10px; }
-    .progress-fill { height: 100%; background: var(--green); border-radius: 4px; transition: width 0.8s ease; }
+    .progress-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
     .progress-nums { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 16px; }
     .progress-nums .raised { font-weight: 800; }
     .progress-nums .goal { color: var(--muted); }
@@ -52,18 +51,16 @@
     .mini-stat .val { font-size: 20px; font-weight: 800; }
     .mini-stat .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-    /* AI score box */
-    .ai-score-box { border-radius: 10px; padding: 16px 18px; margin-bottom: 18px; border: 1.5px solid; }
-    .ai-score-box.critical { background: #fde8e8; border-color: #e74c3c; }
-    .ai-score-box.high { background: var(--orange-pale); border-color: var(--orange); }
-    .ai-score-box.medium { background: #fefde8; border-color: #f0c040; }
-    .ai-score-box.low { background: var(--green-pale); border-color: var(--green); }
+    .ai-box { border-radius: 10px; padding: 16px 18px; margin-bottom: 18px; border: 1.5px solid; }
+    .ai-box.critical { background: #fde8e8; border-color: #e74c3c; }
+    .ai-box.high { background: var(--orange-pale); border-color: var(--orange); }
+    .ai-box.medium { background: #fefde8; border-color: #f0c040; }
+    .ai-box.low { background: var(--green-pale); border-color: var(--green); }
     .ai-score-num { font-size: 28px; font-weight: 900; }
     .ai-score-label { font-size: 13px; font-weight: 800; margin-bottom: 4px; }
     .ai-score-summary { font-size: 12px; color: var(--muted); line-height: 1.6; }
 
-    .story p { font-size: 13px; color: var(--muted); line-height: 1.8; margin-bottom: 12px; }
-    .story p:last-child { margin-bottom: 0; }
+    .story p { font-size: 13px; color: var(--muted); line-height: 1.8; }
 
     /* sidebar */
     .donate-card { background: white; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
@@ -73,7 +70,6 @@
     .donate-top .d-goal { font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 2px; }
     .donate-top .d-bar { height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin-top: 10px; }
     .donate-top .d-fill { height: 100%; background: #7dd98a; border-radius: 2px; }
-
     .donate-body { padding: 18px 20px; }
     .amount-btns { display: flex; gap: 8px; margin-bottom: 10px; }
     .amt { flex: 1; padding: 9px 4px; border: 1.5px solid var(--border); border-radius: 7px; background: var(--bg); font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); cursor: pointer; text-align: center; transition: all 0.2s; }
@@ -81,10 +77,8 @@
     .custom-amount { width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 7px; font-family: 'Montserrat', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; margin-bottom: 10px; }
     .custom-amount:focus { border-color: var(--green); }
     .custom-amount::placeholder { color: #bbb; }
-
     .btn-donate { width: 100%; padding: 12px; background: var(--green); color: white; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; }
     .btn-donate:hover { background: var(--green-light); }
-    .btn-donate:disabled { background: var(--muted); cursor: not-allowed; }
     .secure-note { text-align: center; font-size: 11px; color: var(--muted); margin-top: 8px; }
 
     .org-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; }
@@ -94,19 +88,42 @@
     .org-name { font-size: 13px; font-weight: 700; }
     .org-check { font-size: 11px; color: var(--green); font-weight: 600; margin-top: 2px; }
 
+    /* share — copy only */
     .share-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
     .share-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--muted); margin-bottom: 10px; }
-    .share-btns { display: flex; gap: 8px; }
-    .share-btn { flex: 1; padding: 9px; border: 1.5px solid var(--border); border-radius: 7px; background: var(--bg); cursor: pointer; text-align: center; font-size: 14px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-    .share-btn:hover { border-color: var(--green); background: var(--green-pale); }
+    .copy-btn { width: 100%; padding: 10px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--bg); font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
+    .copy-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-pale); }
+    .copy-btn.copied { border-color: var(--green); background: var(--green-pale); color: var(--green); }
+
+    /* toast */
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--green-dark); color: white; padding: 12px 24px; border-radius: 8px; font-size: 13px; font-weight: 600; z-index: 9999; display: none; }
+    .toast.show { display: block; }
+
+    /* payment modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: none; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: white; border-radius: 16px; padding: 32px; width: 100%; max-width: 440px; position: relative; }
+    .modal h2 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    .modal .sub { font-size: 12px; color: var(--muted); margin-bottom: 24px; }
+    .modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; cursor: pointer; font-size: 18px; color: var(--muted); }
+    .modal-field { margin-bottom: 14px; }
+    .modal-field label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .modal-field input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 13px; color: var(--text); background: var(--bg); outline: none; transition: border-color 0.2s; }
+    .modal-field input:focus { border-color: var(--green); }
+    .modal-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .modal-amount { background: var(--green-pale); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; font-size: 14px; font-weight: 800; color: var(--green); text-align: center; }
+    .btn-confirm { width: 100%; padding: 13px; background: var(--green); color: white; border: none; border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    .btn-confirm:hover { background: var(--green-light); }
+    .btn-confirm:disabled { background: var(--muted); cursor: not-allowed; }
+    .secure-icons { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 12px; font-size: 11px; color: var(--muted); }
 
     .loading { text-align: center; padding: 60px; color: var(--muted); }
 
     @media (max-width: 768px) {
       .page { grid-template-columns: 1fr; }
       .camp-hero { height: 220px; }
-      .hero-emoji { display: none; }
-      .hero-content { padding: 24px 20px; }
+      .hero-emoji-big { display: none; }
+      .hero-content { padding: 20px; }
       nav { padding: 0 16px; }
     }
   </style>
@@ -117,7 +134,7 @@
     <a class="logo" href="home.html">
       <i class="fa-solid fa-paw"></i>
       <i class="fa-solid fa-heart orange"></i>
-      <span>Community & Animal Support</span>
+      <span>Revobin</span>
     </a>
     <div class="nav-btns">
       <a href="login.html" class="btn-outline">Sign In</a>
@@ -125,41 +142,91 @@
     </div>
   </nav>
 
-  <!-- Hero — filled dynamically -->
+  <!-- Hero -->
   <div class="camp-hero">
-    <div class="hero-emoji" id="heroEmoji">🤝</div>
+    <div class="hero-bg human" id="heroBg">
+      <div class="hero-emoji-big" id="heroEmoji">🤝</div>
+    </div>
     <div class="hero-content">
       <div class="breadcrumb">
         <a href="home.html">Home</a>
         <i class="fa-solid fa-chevron-right" style="font-size:9px"></i>
         <a href="all-campaigns.html">Campaigns</a>
         <i class="fa-solid fa-chevron-right" style="font-size:9px"></i>
-        <span id="breadCrumbType">Loading...</span>
+        <span id="breadType">Loading...</span>
       </div>
-      <div class="camp-type" id="campType">Loading...</div>
+      <div class="camp-type-badge" id="campTypeBadge">Loading...</div>
       <h1 id="campTitle">Loading campaign...</h1>
     </div>
   </div>
 
+  <!-- Page body — filled by JS -->
   <div class="page" id="pageContent">
     <div style="grid-column:1/-1" class="loading">
       <i class="fa-solid fa-spinner fa-spin"></i> Loading case details...
     </div>
   </div>
 
+  <!-- Payment Modal -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      <h2>Complete Your Donation</h2>
+      <p class="sub">Your payment is processed securely.</p>
+      <div class="modal-amount" id="modalAmount">JD 25</div>
+      <div class="modal-field">
+        <label>Cardholder Name</label>
+        <input type="text" id="cardName" placeholder="Omar Meteb" />
+      </div>
+      <div class="modal-field">
+        <label>Card Number</label>
+        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)" />
+      </div>
+      <div class="modal-row">
+        <div class="modal-field">
+          <label>Expiry Date</label>
+          <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" />
+        </div>
+        <div class="modal-field">
+          <label>CVV</label>
+          <input type="text" id="cardCVV" placeholder="123" maxlength="3" />
+        </div>
+      </div>
+      <button class="btn-confirm" id="confirmBtn" onclick="confirmPayment()">
+        <i class="fa-solid fa-lock"></i> Confirm Payment
+      </button>
+      <div class="secure-icons">
+        <i class="fa-solid fa-shield-halved"></i>
+        SSL Secured · Mock Payment · No real charges
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
   <script>
+    let currentCaseId = null;
+    let currentAmount = 25;
+
+    const labelColors = { critical: '#e74c3c', high: '#e8722a', medium: '#f0c040', low: '#2d7a3a' };
+
     function getCaseId() {
       return new URLSearchParams(window.location.search).get('id');
     }
 
-    const labelColors = { critical: '#e74c3c', high: '#e8722a', medium: '#f0c040', low: '#2d7a3a' };
+    // image fallback based on category
+    function getCategoryEmoji(category) {
+      return category === 'animal' ? '🐾' : '🤝';
+    }
 
     async function loadCase() {
       const id = getCaseId();
       if (!id) {
-        document.getElementById('pageContent').innerHTML = '<div class="loading" style="grid-column:1/-1">No case ID found. <a href="all-campaigns.html">Go back</a></div>';
+        document.getElementById('pageContent').innerHTML = '<div class="loading" style="grid-column:1/-1">No case ID. <a href="all-campaigns.html">Go back</a></div>';
         return;
       }
+
+      currentCaseId = id;
 
       try {
         const res = await fetch('/api/cases/' + id);
@@ -170,20 +237,24 @@
         const finalScore = score?.finalScore ?? 0;
         const label = (score?.label ?? c.urgency ?? 'low').toLowerCase();
         const pct = c.goal_amount > 0 ? Math.round(((c.current_amount || 0) / c.goal_amount) * 100) : 0;
-        const emoji = c.category === 'animal' ? '🐾' : '🤝';
+        const emoji = getCategoryEmoji(c.category);
+        const isAnimal = c.category === 'animal';
 
         // update hero
         document.getElementById('heroEmoji').textContent = emoji;
+        const heroBg = document.getElementById('heroBg');
+        heroBg.className = 'hero-bg ' + (isAnimal ? 'animal' : 'human');
         document.getElementById('campTitle').textContent = c.title;
-        document.getElementById('campType').textContent = (c.category === 'animal' ? '🐾 Animal Rescue' : '🤝 Human Support');
-        document.getElementById('breadCrumbType').textContent = c.category === 'animal' ? 'Animal Rescue' : 'Human Support';
-        document.title = c.title + ' - Community & Animal Support';
+        document.getElementById('campTypeBadge').textContent = isAnimal ? '🐾 Animal Rescue' : '🤝 Human Support';
+        document.getElementById('breadType').textContent = isAnimal ? 'Animal Rescue' : 'Human Support';
+        document.title = c.title + ' - Revobin';
+
+        const color = labelColors[label] || '#999';
 
         document.getElementById('pageContent').innerHTML = `
           <div>
-            <!-- progress -->
             <div class="card">
-              <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+              <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${color}"></div></div>
               <div class="progress-nums">
                 <span class="raised">JD ${c.current_amount || 0} raised</span>
                 <span class="goal">of JD ${c.goal_amount}</span>
@@ -195,25 +266,20 @@
               </div>
             </div>
 
-            <!-- AI score -->
             ${score ? `
-              <div class="ai-score-box ${label}">
+              <div class="ai-box ${label}">
                 <div class="ai-score-label"><i class="fa-solid fa-robot"></i> AI Priority Assessment</div>
-                <div class="ai-score-num" style="color:${labelColors[label]}">${finalScore}/100</div>
+                <div class="ai-score-num" style="color:${color}">${finalScore}/100</div>
                 <div class="ai-score-summary">${score.summary || ''}</div>
               </div>
             ` : ''}
 
-            <!-- story -->
             <div class="card">
               <h2><i class="fa-solid fa-book-open"></i> About This Case</h2>
-              <div class="story">
-                <p>${c.description || 'No description available.'}</p>
-              </div>
+              <div class="story"><p>${c.description || 'No description available.'}</p></div>
             </div>
           </div>
 
-          <!-- SIDEBAR -->
           <div>
             <div class="donate-card">
               <div class="donate-top">
@@ -224,15 +290,15 @@
               </div>
               <div class="donate-body">
                 <div class="amount-btns">
-                  <button class="amt" onclick="pickAmt(this)">JD 10</button>
-                  <button class="amt picked" onclick="pickAmt(this)">JD 25</button>
-                  <button class="amt" onclick="pickAmt(this)">JD 50</button>
+                  <button class="amt" onclick="pickAmt(this, 10)">JD 10</button>
+                  <button class="amt picked" onclick="pickAmt(this, 25)">JD 25</button>
+                  <button class="amt" onclick="pickAmt(this, 50)">JD 50</button>
                 </div>
-                <input class="custom-amount" id="customAmt" type="number" placeholder="Or enter amount (JD)" />
-                <button class="btn-donate" id="donateBtn" onclick="donate(${c.id})">
+                <input class="custom-amount" id="customAmt" type="number" placeholder="Or enter amount (JD)" oninput="updateCustomAmt(this.value)" />
+                <button class="btn-donate" onclick="openPaymentModal()">
                   <i class="fa-solid fa-heart"></i> Donate Now
                 </button>
-                <div class="secure-note">100% goes directly to this case</div>
+                <div class="secure-note"><i class="fa-solid fa-lock" style="font-size:10px"></i> 100% goes to this case</div>
               </div>
             </div>
 
@@ -249,41 +315,64 @@
 
             <div class="share-card">
               <div class="share-label">SHARE THIS CASE</div>
-              <div class="share-btns">
-                <a href="#" class="share-btn"><i class="fa-brands fa-whatsapp" style="color:#25d366"></i></a>
-                <a href="#" class="share-btn"><i class="fa-brands fa-facebook" style="color:#1877f2"></i></a>
-                <a href="#" class="share-btn"><i class="fa-brands fa-x-twitter"></i></a>
-                <a href="#" class="share-btn" onclick="copyLink()"><i class="fa-solid fa-link" style="color:var(--muted)"></i></a>
-              </div>
+              <button class="copy-btn" id="copyBtn" onclick="copyLink()">
+                <i class="fa-solid fa-link"></i> Copy Link to Clipboard
+              </button>
             </div>
           </div>
         `;
 
       } catch (err) {
         document.getElementById('pageContent').innerHTML = `
-          <div class="loading" style="grid-column:1/-1">
-            Could not load case. <a href="all-campaigns.html">Go back to campaigns</a>
-          </div>`;
+          <div class="loading" style="grid-column:1/-1">Could not load case. <a href="all-campaigns.html">Go back</a></div>`;
       }
     }
 
-    function pickAmt(btn) {
+    function pickAmt(btn, amount) {
       document.querySelectorAll('.amt').forEach(b => b.classList.remove('picked'));
       btn.classList.add('picked');
-      document.getElementById('customAmt').value = '';
+      currentAmount = amount;
+      const customInput = document.getElementById('customAmt');
+      if (customInput) customInput.value = '';
     }
 
-    async function donate(caseId) {
+    function updateCustomAmt(val) {
+      document.querySelectorAll('.amt').forEach(b => b.classList.remove('picked'));
+      currentAmount = parseFloat(val) || 0;
+    }
+
+    function openPaymentModal() {
+      const custom = document.getElementById('customAmt')?.value;
+      if (custom) currentAmount = parseFloat(custom);
+      if (!currentAmount || currentAmount <= 0) { showToast('Please select or enter an amount.'); return; }
+      document.getElementById('modalAmount').textContent = 'Donation: JD ' + currentAmount;
+      document.getElementById('paymentModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('paymentModal').classList.remove('open');
+    }
+
+    function formatCard(input) {
+      let val = input.value.replace(/\D/g, '').substring(0, 16);
+      input.value = val.replace(/(.{4})/g, '$1 ').trim();
+    }
+
+    async function confirmPayment() {
+      const name = document.getElementById('cardName').value.trim();
+      const number = document.getElementById('cardNumber').value.trim();
+      const expiry = document.getElementById('cardExpiry').value.trim();
+      const cvv = document.getElementById('cardCVV').value.trim();
+
+      if (!name || !number || !expiry || !cvv) {
+        showToast('Please fill in all payment fields.');
+        return;
+      }
+
       const token = localStorage.getItem('token');
-      if (!token) { alert('Please login to donate.'); window.location.href = 'login.html'; return; }
+      if (!token) { closeModal(); window.location.href = 'login.html'; return; }
 
-      const picked = document.querySelector('.amt.picked');
-      const custom = document.getElementById('customAmt').value;
-      const amount = custom ? parseFloat(custom) : (picked ? parseFloat(picked.textContent.replace('JD ', '')) : null);
-
-      if (!amount || amount <= 0) { alert('Please select or enter a valid amount.'); return; }
-
-      const btn = document.getElementById('donateBtn');
+      const btn = document.getElementById('confirmBtn');
       btn.disabled = true;
       btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
@@ -291,32 +380,46 @@
         const res = await fetch('/api/donations', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': token },
-          body: JSON.stringify({ case_id: caseId, amount })
+          body: JSON.stringify({ case_id: currentCaseId, amount: currentAmount })
         });
 
         const data = await res.json();
+
         if (res.ok) {
-          alert('Thank you for your donation of JD ' + amount + '! 🎉');
-          loadCase();
+          closeModal();
+          showToast('🎉 Thank you! Your donation of JD ' + currentAmount + ' was successful!');
+          setTimeout(() => loadCase(), 1500);
         } else {
-          alert(data.message || 'Donation failed.');
+          showToast(data.message || 'Payment failed.');
           btn.disabled = false;
-          btn.innerHTML = '<i class="fa-solid fa-heart"></i> Donate Now';
+          btn.innerHTML = '<i class="fa-solid fa-lock"></i> Confirm Payment';
         }
       } catch (err) {
-        alert('Could not connect to server.');
+        showToast('Could not connect to server.');
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-heart"></i> Donate Now';
+        btn.innerHTML = '<i class="fa-solid fa-lock"></i> Confirm Payment';
       }
     }
 
     function copyLink() {
-      navigator.clipboard.writeText(window.location.href);
-      alert('Link copied!');
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        const btn = document.getElementById('copyBtn');
+        if (btn) { btn.classList.add('copied'); btn.innerHTML = '<i class="fa-solid fa-check"></i> Link copied to clipboard!'; }
+        showToast('✅ Link copied to clipboard!');
+        setTimeout(() => {
+          if (btn) { btn.classList.remove('copied'); btn.innerHTML = '<i class="fa-solid fa-link"></i> Copy Link to Clipboard'; }
+        }, 3000);
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
     }
 
     loadCase();
   </script>
-
 </body>
 </html>
